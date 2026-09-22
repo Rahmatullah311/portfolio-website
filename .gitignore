@@ -1,0 +1,6 @@
+# Docker
+.env
+.env.local
+staticfiles/
+media/
+*.log

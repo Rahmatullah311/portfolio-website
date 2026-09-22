@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}~/portfolio{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              mono: ["JetBrains Mono", "Fira Code", "monospace"],
+            },
+            colors: {
+              term: {
+                bg: "#0a0e14",
+                surface: "#0d1117",
+                card: "#161b22",
+                border: "#30363d",
+                text: "#c9d1d9",
+                dim: "#8b949e",
+                blue: "#58a6ff",
+                green: "#3fb950",
+                purple: "#bc8cff",
+                orange: "#d29922",
+                red: "#f85149",
+                cyan: "#39c5cf",
+                yellow: "#d29922",
+              },
+            },
+          },
+        },
+      };
+
+      if (localStorage.getItem("theme") === "light") {
+        document.documentElement.classList.remove("dark");
+      } else {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
+
+    <style>
+      * {
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+        scrollbar-width: thin;
+        scrollbar-color: #30363d #0d1117;
+      }
+
+      body {
+        background: #0a0e14;
+        color: #c9d1d9;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0d1117;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #30363d;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #58a6ff;
+      }
+
+      /* Terminal Window */
+      .terminal {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        box-shadow: 0 0 20px rgba(88, 166, 255, 0.1);
+        position: relative;
+      }
+
+      .terminal::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 35px;
+        background: #161b22;
+        border-bottom: 1px solid #30363d;
+        border-radius: 6px 6px 0 0;
+      }
+
+      .terminal-header {
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        background: #161b22;
+        border-bottom: 1px solid #30363d;
+        border-radius: 6px 6px 0 0;
+      }
+
+      .terminal-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+        transition: all 0.3s;
+      }
+
+      .terminal-dot:hover {
+        transform: scale(1.2);
+      }
+
+      .terminal-body {
+        padding: 20px;
+        font-family: "JetBrains Mono", monospace;
+        position: relative;
+      }
+
+      /* Scanline effect */
+      .scanlines {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+      }
+
+      /* Glitch effect */
+      .glitch {
+        position: relative;
+        animation: glitch 2s infinite;
+      }
+
+      @keyframes glitch {
+        0%,
+        90% {
+          transform: translate(0);
+        }
+        92% {
+          transform: translate(-2px, 2px);
+        }
+        94% {
+          transform: translate(2px, -2px);
+        }
+        96% {
+          transform: translate(-1px, -1px);
+        }
+        98% {
+          transform: translate(1px, 1px);
+        }
+        100% {
+          transform: translate(0);
+        }
+      }
+
+      /* Cursor blink */
+      .cursor {
+        display: inline-block;
+        width: 10px;
+        height: 20px;
+        background: #58a6ff;
+        animation: blink 1s infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* Typing animation */
+      .typing {
+        overflow: hidden;
+        white-space: nowrap;
+        animation: typing 2s steps(40);
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      /* Command prompt */
+      .prompt::before {
+        content: "➜ ";
+        color: #3fb950;
+        font-weight: bold;
+      }
+
+      /* Syntax colors */
+      .cmd {
+        color: #58a6ff;
+      }
+      .arg {
+        color: #d29922;
+      }
+      .str {
+        color: #a5d6ff;
+      }
+      .num {
+        color: #79c0ff;
+      }
+      .comment {
+        color: #8b949e;
+        font-style: italic;
+      }
+      .keyword {
+        color: #ff7b72;
+      }
+      .func {
+        color: #d2a8ff;
+      }
+
+      /* Grid background */
+      .grid-bg {
+        background-image:
+          linear-gradient(rgba(88, 166, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(88, 166, 255, 0.05) 1px, transparent 1px);
+        background-size: 30px 30px;
+      }
+
+      /* Terminal input */
+      .term-input {
+        background: transparent;
+        border: none;
+        color: #c9d1d9;
+        font-family: "JetBrains Mono", monospace;
+        outline: none;
+        caret-color: #58a6ff;
+      }
+
+      /* Glow effects */
+      .glow-blue {
+        box-shadow: 0 0 30px rgba(88, 166, 255, 0.3);
+      }
+      .glow-green {
+        box-shadow: 0 0 30px rgba(63, 185, 80, 0.3);
+      }
+      .glow-purple {
+        box-shadow: 0 0 30px rgba(188, 140, 255, 0.3);
+      }
+
+      /* Matrix rain effect */
+      .matrix-rain {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        color: rgba(88, 166, 255, 0.3);
+      }
+
+      /* Hover effects */
+      .term-hover {
+        transition: all 0.3s;
+      }
+      .term-hover:hover {
+        border-color: #58a6ff;
+        box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* Status bar */
+      .status-bar {
+        background: #161b22;
+        border-top: 1px solid #30363d;
+        color: #8b949e;
+        font-size: 12px;
+      }
+
+      /* ASCII art */
+      .ascii-art {
+        font-family: "JetBrains Mono", monospace;
+        line-height: 1.2;
+        color: #58a6ff;
+      }
+
+      /* Terminal tabs */
+      .term-tab {
+        padding: 8px 16px;
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-bottom: none;
+        border-radius: 6px 6px 0 0;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .term-tab.active {
+        background: #161b22;
+        color: #58a6ff;
+        border-color: #58a6ff;
+      }
+    </style>
+  </head>
+  <body class="bg-[#0a0e14] text-[#c9d1d9]">
+    <!-- Matrix Rain Background -->
+    <canvas id="matrixCanvas" class="matrix-rain"></canvas>
+
+    <!-- Scanlines overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Terminal Navigation -->
+    <nav
+      class="fixed top-0 w-full z-50 bg-[#0d1117]/95 backdrop-blur border-b border-[#30363d]"
+    >
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex justify-between items-center h-14">
+          <div class="flex items-center gap-3">
+            <span class="text-[#3fb950] font-bold">➜</span>
+            <span class="text-[#58a6ff] font-bold">~/portfolio</span>
+          </div>
+
+          <div class="hidden md:flex items-center space-x-6">
+            <a
+              href="{% url 'home' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+            >
+              <span class="text-[#3fb950]">$</span> cd ~
+            </a>
+            <a
+              href="{% url 'project_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+            >
+              <span class="text-[#3fb950]">$</span> ls projects/
+            </a>
+            <a
+              href="{% url 'article_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+            >
+              <span class="text-[#3fb950]">$</span> cat articles/
+            </a>
+            <a
+              href="{% url 'snippet_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+            >
+              <span class="text-[#3fb950]">$</span> vim snippets/
+            </a>
+            <a
+              href="{% url 'gallery_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+            >
+              <span class="text-[#3fb950]">$</span> open gallery/
+            </a>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <span class="text-[#8b949e] text-xs">v1.0.0</span>
+            <button
+              id="themeToggle"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors"
+            >
+              <i class="fas fa-terminal"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10">{% block content %} {% endblock %}</main>
+
+    <!-- Status Bar Footer -->
+    <footer class="status-bar fixed bottom-0 w-full z-50">
+      <div
+        class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center"
+      >
+        <span>© 2024 ~/portfolio</span>
+        <span>UTF-8 | LF | TypeScript React</span>
+        <span>Ln 1, Col 1</span>
+      </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 600,
+        once: true,
+      });
+
+      // Matrix Rain Effect
+      const canvas = document.getElementById("matrixCanvas");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const matrix =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*()_+-=[]{}|;:,.<>?/";
+      const fontSize = 14;
+      const columns = canvas.width / fontSize;
+      const drops = [];
+
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.random() * -100;
+      }
+
+      function drawMatrix() {
+        ctx.fillStyle = "rgba(10, 14, 20, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "rgba(88, 166, 255, 0.3)";
+        ctx.font = fontSize + "px JetBrains Mono";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = matrix[Math.floor(Math.random() * matrix.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      setInterval(drawMatrix, 50);
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+    </script>
+  </body>
+</html>

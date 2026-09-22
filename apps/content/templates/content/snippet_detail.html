@@ -1,0 +1,202 @@
+{% extends 'base.html' %} {% block title %}{{ snippet.title }} - ~/snippets{%
+endblock %} {% block content %}
+<div class="max-w-5xl mx-auto px-4 pt-24 pb-16">
+  <!-- Breadcrumb -->
+  <div class="mb-8" data-aos="fade-down">
+    <p class="text-sm text-[#8b949e]">
+      <a href="{% url 'home' %}" class="text-[#58a6ff] hover:text-[#3fb950]"
+        >~</a
+      >
+      <span class="text-[#3fb950]">/</span>
+      <a
+        href="{% url 'snippet_list' %}"
+        class="text-[#58a6ff] hover:text-[#3fb950]"
+        >snippets</a
+      >
+      <span class="text-[#3fb950]">/</span>
+      <span class="text-[#c9d1d9]">{{ snippet.slug }}</span>
+    </p>
+  </div>
+
+  <!-- Snippet Header -->
+  <div class="terminal mb-8" data-aos="fade-up">
+    <div class="terminal-header">
+      <span class="terminal-dot bg-[#f85149]"></span>
+      <span class="terminal-dot bg-[#d29922]"></span>
+      <span class="terminal-dot bg-[#3fb950]"></span>
+      <span class="text-[#8b949e] text-sm ml-4"
+        >{{ snippet.title }}.{{ snippet.language }}</span
+      >
+      <span class="ml-auto text-[#8b949e] text-xs">{{ snippet.language }}</span>
+    </div>
+    <div class="terminal-body">
+      <p class="text-sm text-[#8b949e] mb-4">
+        <span class="text-[#bc8cff]"
+          >"{{ snippet.title }}.{{ snippet.language }}"</span
+        >
+        [readonly]
+      </p>
+
+      <h1 class="text-2xl font-bold text-[#c9d1d9] mb-3">
+        {{ snippet.title }}
+      </h1>
+
+      {% if snippet.description %}
+      <p class="text-[#8b949e] mb-4">{{ snippet.description }}</p>
+      {% endif %} {% if snippet.tags %}
+      <div class="flex flex-wrap gap-2 mb-6">
+        {% for tag in snippet.tags %}
+        <span class="text-xs text-[#bc8cff]">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="border-t border-[#30363d] pt-4">
+        <p class="text-sm text-[#8b949e]">
+          <span class="text-[#3fb950]">$</span>
+          <span class="text-[#58a6ff]">vim</span> {{ snippet.title }}.{{
+          snippet.language }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Code Display -->
+  <div class="terminal mb-8" data-aos="fade-up">
+    <div class="terminal-header">
+      <span class="terminal-dot bg-[#f85149]"></span>
+      <span class="terminal-dot bg-[#d29922]"></span>
+      <span class="terminal-dot bg-[#3fb950]"></span>
+      <span class="text-[#8b949e] text-sm ml-4"
+        >{{ snippet.title }}.{{ snippet.language }}</span
+      >
+      <button
+        onclick="copyCode()"
+        class="ml-auto text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+      >
+        <i class="fas fa-copy mr-1"></i>copy
+      </button>
+    </div>
+    <div class="terminal-body">
+      <div
+        class="bg-[#0a0e14] border border-[#30363d] rounded p-6 overflow-x-auto"
+      >
+        <pre
+          class="text-sm text-[#c9d1d9] font-mono leading-relaxed"
+        ><code id="snippetCode">{{ snippet.code }}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feedback Section -->
+  <div class="terminal" data-aos="fade-up">
+    <div class="terminal-header">
+      <span class="terminal-dot bg-[#f85149]"></span>
+      <span class="terminal-dot bg-[#d29922]"></span>
+      <span class="terminal-dot bg-[#3fb950]"></span>
+      <span class="text-[#8b949e] text-sm ml-4">feedback.log</span>
+    </div>
+    <div class="terminal-body">
+      <h2 class="text-xl font-bold text-[#c9d1d9] mb-6">
+        <span class="text-[#3fb950]">$</span>
+        <span class="text-[#58a6ff]">cat</span> feedback.log
+      </h2>
+
+      <!-- Feedback Form -->
+      <form
+        method="post"
+        action="{% url 'submit_feedback' %}"
+        class="mb-8 p-4 border border-[#30363d] rounded"
+      >
+        {% csrf_token %}
+        <input
+          type="hidden"
+          name="content_type_id"
+          value="{{ content_type.id }}"
+        />
+        <input type="hidden" name="object_id" value="{{ snippet.id }}" />
+
+        <div class="mb-4">
+          <label class="block text-[#8b949e] mb-2 text-sm"
+            >// Select rating:</label
+          >
+          <div class="flex gap-4">
+            {% for choice in feedback_form.rating %}
+            <label
+              class="flex items-center gap-1 cursor-pointer text-[#d29922]"
+            >
+              {{ choice.tag }}
+              <span class="text-sm text-[#8b949e]"
+                >{{ choice.choice_label }}</span
+              >
+            </label>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-[#8b949e] mb-2 text-sm"
+            >// Your comment:</label
+          >
+          {{ feedback_form.comment }}
+        </div>
+
+        <button
+          type="submit"
+          class="terminal inline-block px-6 py-3 term-hover"
+        >
+          <span class="text-[#3fb950]">➜</span>
+          <span class="text-[#58a6ff]">./submit_feedback</span>
+        </button>
+      </form>
+
+      <!-- Existing Feedback -->
+      {% if feedbacks %}
+      <div class="space-y-4">
+        <p class="text-[#8b949e] text-sm">// Recent feedback:</p>
+        {% for feedback in feedbacks %}
+        <div class="border-l-2 border-[#bc8cff] pl-4 py-2">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="text-[#d29922]">
+              {% for i in "12345" %} {% if forloop.counter <= feedback.rating
+              %}★{% else %}☆{% endif %} {% endfor %}
+            </span>
+            <span class="text-xs text-[#8b949e]"
+              >{{ feedback.created_at|date:"Y-m-d H:i" }}</span
+            >
+          </div>
+          {% if feedback.comment %}
+          <p class="text-sm text-[#c9d1d9]">{{ feedback.comment }}</p>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="text-[#8b949e] text-sm">// No feedback yet. Be the first!</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyCode() {
+    const code = document.getElementById("snippetCode").textContent;
+    navigator.clipboard
+      .writeText(code)
+      .then(() => {
+        alert("$ Code copied to clipboard!");
+      })
+      .catch((err) => {
+        console.error("Failed to copy: ", err);
+        // Fallback
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textarea);
+        alert("$ Code copied to clipboard!");
+      });
+  }
+</script>
+{% endblock %}

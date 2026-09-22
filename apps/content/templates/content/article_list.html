@@ -1,0 +1,140 @@
+{% extends 'base.html' %} {% block title %}~/articles - Portfolio{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 pt-24 pb-16">
+  <!-- Header -->
+  <div class="mb-12" data-aos="fade-down">
+    <div class="terminal inline-block px-4 py-2 mb-6">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">cd</span>
+      <span class="text-[#d29922]">~/articles</span>
+    </div>
+    <h1 class="text-3xl font-bold text-[#c9d1d9] mb-4">
+      <span class="text-[#3fb950]">$</span>
+      <span class="text-[#58a6ff]">cat</span>
+      <span class="text-[#d29922]">articles.log</span>
+    </h1>
+    <p class="text-[#8b949e]">// Reading technical articles and tutorials</p>
+  </div>
+
+  <!-- Tag Filters -->
+  {% if all_tags %}
+  <div class="terminal mb-8" data-aos="fade-up">
+    <div class="terminal-header">
+      <span class="terminal-dot bg-[#f85149]"></span>
+      <span class="terminal-dot bg-[#d29922]"></span>
+      <span class="terminal-dot bg-[#3fb950]"></span>
+      <span class="text-[#8b949e] text-sm ml-4">grep --tag</span>
+    </div>
+    <div class="terminal-body">
+      <div class="flex flex-wrap gap-2">
+        <a
+          href="{% url 'article_list' %}"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#3fb950] hover:border-[#3fb950] transition-all text-sm"
+        >
+          #all
+        </a>
+        {% for tag in all_tags %}
+        <a
+          href="?tag={{ tag }}"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#3fb950] hover:border-[#3fb950] transition-all text-sm"
+        >
+          #{{ tag }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Articles List -->
+  {% if articles %}
+  <div class="space-y-4">
+    {% for article in articles %}
+    <div
+      class="terminal term-hover"
+      data-aos="fade-up"
+      data-aos-delay="{{ forloop.counter|add:50 }}"
+    >
+      <div class="terminal-header">
+        <span class="terminal-dot bg-[#f85149]"></span>
+        <span class="terminal-dot bg-[#d29922]"></span>
+        <span class="terminal-dot bg-[#3fb950]"></span>
+        <span class="text-[#8b949e] text-xs ml-4"
+          >article_{% if forloop.counter < 10 %}0{% endif %}{{ forloop.counter
+          }}.md</span
+        >
+      </div>
+
+      <a href="{{ article.get_absolute_url }}">
+        <div class="terminal-body">
+          <p class="text-xs text-[#8b949e] mb-3">
+            [{{ article.created_at|date:"Y-m-d H:i:s" }}]
+            <span class="text-[#3fb950]">INFO</span> - Article published
+          </p>
+
+          <h2
+            class="text-xl font-bold text-[#c9d1d9] mb-3 hover:text-[#58a6ff] transition-colors"
+          >
+            {{ article.title }}
+          </h2>
+
+          <p class="text-sm text-[#8b949e] mb-4">
+            {{ article.content|truncatewords:30 }}
+          </p>
+
+          <div class="flex items-center justify-between">
+            {% if article.tags %}
+            <div class="flex flex-wrap gap-2">
+              {% for tag in article.tags|slice:":4" %}
+              <span class="text-xs text-[#3fb950]">#{{ tag }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <span class="text-xs text-[#58a6ff]">read_more →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="terminal" data-aos="fade-up">
+    <div class="terminal-body text-center py-12">
+      <p class="text-[#8b949e] mb-4">$ tail articles.log</p>
+      <p class="text-[#f85149]">No articles found</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+  <div class="mt-12 flex justify-center" data-aos="fade-up">
+    <div class="terminal inline-flex">
+      <div class="terminal-body flex items-center gap-4">
+        {% if page_obj.has_previous %}
+        <a
+          href="?page={{ page_obj.previous_page_number }}"
+          class="text-[#58a6ff] hover:text-[#3fb950] transition-colors"
+        >
+          <span class="text-[#3fb950]">←</span> prev
+        </a>
+        {% endif %}
+
+        <span class="text-[#c9d1d9]"
+          >Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
+        >
+
+        {% if page_obj.has_next %}
+        <a
+          href="?page={{ page_obj.next_page_number }}"
+          class="text-[#58a6ff] hover:text-[#3fb950] transition-colors"
+        >
+          next <span class="text-[#3fb950]">→</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

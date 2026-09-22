@@ -1,0 +1,153 @@
+{% extends 'base.html' %} {% block title %}~/snippets - Portfolio{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 pt-24 pb-16">
+  <!-- Header -->
+  <div class="mb-12" data-aos="fade-down">
+    <div class="terminal inline-block px-4 py-2 mb-6">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">cd</span>
+      <span class="text-[#d29922]">~/snippets</span>
+    </div>
+    <h1 class="text-3xl font-bold text-[#c9d1d9] mb-4">
+      <span class="text-[#3fb950]">$</span>
+      <span class="text-[#58a6ff]">ls</span>
+      <span class="text-[#d29922]">-la</span> snippets/
+    </h1>
+    <p class="text-[#8b949e]">// Browsing code snippets and solutions</p>
+  </div>
+
+  <!-- Language Filters -->
+  {% if all_languages %}
+  <div class="terminal mb-8" data-aos="fade-up">
+    <div class="terminal-header">
+      <span class="terminal-dot bg-[#f85149]"></span>
+      <span class="terminal-dot bg-[#d29922]"></span>
+      <span class="terminal-dot bg-[#3fb950]"></span>
+      <span class="text-[#8b949e] text-sm ml-4">filter --language</span>
+    </div>
+    <div class="terminal-body">
+      <div class="flex flex-wrap gap-2">
+        <a
+          href="{% url 'snippet_list' %}"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#bc8cff] hover:border-[#bc8cff] transition-all text-sm"
+        >
+          all
+        </a>
+        {% for language in all_languages %}
+        <a
+          href="?language={{ language }}"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#bc8cff] hover:border-[#bc8cff] transition-all text-sm"
+        >
+          {{ language }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Snippets as Full-Width Code Blocks -->
+  {% if snippets %}
+  <div class="space-y-6">
+    {% for snippet in snippets %}
+    <div
+      class="terminal term-hover"
+      data-aos="fade-up"
+      data-aos-delay="{{ forloop.counter|add:50 }}"
+    >
+      <div class="terminal-header">
+        <span class="terminal-dot bg-[#f85149]"></span>
+        <span class="terminal-dot bg-[#d29922]"></span>
+        <span class="terminal-dot bg-[#3fb950]"></span>
+        <span class="text-[#8b949e] text-xs ml-4"
+          >{{ snippet.title }}.{{ snippet.language }}</span
+        >
+        <span class="ml-auto text-[#8b949e] text-xs"
+          >{{ snippet.language }}</span
+        >
+      </div>
+
+      <a href="{{ snippet.get_absolute_url }}">
+        <div class="terminal-body">
+          <!-- Title and Description -->
+          <div class="mb-4">
+            <p class="text-sm text-[#8b949e] mb-2">
+              <span class="text-[#bc8cff]"
+                >"{{ snippet.title }}.{{ snippet.language }}"</span
+              >
+              [readonly]
+            </p>
+            <h2 class="text-xl font-bold text-[#c9d1d9] mb-2">
+              {{ snippet.title }}
+            </h2>
+            {% if snippet.description %}
+            <p class="text-sm text-[#8b949e]">{{ snippet.description }}</p>
+            {% endif %}
+          </div>
+
+          <!-- Code Preview -->
+          <div
+            class="bg-[#0a0e14] border border-[#30363d] rounded p-4 overflow-x-auto"
+          >
+            <pre class="text-sm text-[#c9d1d9] font-mono">
+{{ snippet.code|truncatewords:50 }}</pre
+            >
+          </div>
+
+          <!-- Footer -->
+          <div class="flex items-center justify-between mt-4">
+            {% if snippet.tags %}
+            <div class="flex flex-wrap gap-2">
+              {% for tag in snippet.tags %}
+              <span class="text-xs text-[#bc8cff]">#{{ tag }}</span>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <span class="text-xs text-[#58a6ff]">vim →</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="terminal" data-aos="fade-up">
+    <div class="terminal-body text-center py-12">
+      <p class="text-[#8b949e] mb-4">$ ls snippets/</p>
+      <p class="text-[#f85149]">directory is empty</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+  <div class="mt-12 flex justify-center" data-aos="fade-up">
+    <div class="terminal inline-flex">
+      <div class="terminal-body flex items-center gap-4">
+        {% if page_obj.has_previous %}
+        <a
+          href="?page={{ page_obj.previous_page_number }}"
+          class="text-[#58a6ff] hover:text-[#3fb950] transition-colors"
+        >
+          <span class="text-[#3fb950]">←</span> prev
+        </a>
+        {% endif %}
+
+        <span class="text-[#c9d1d9]"
+          >Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
+        >
+
+        {% if page_obj.has_next %}
+        <a
+          href="?page={{ page_obj.next_page_number }}"
+          class="text-[#58a6ff] hover:text-[#3fb950] transition-colors"
+        >
+          next <span class="text-[#3fb950]">→</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

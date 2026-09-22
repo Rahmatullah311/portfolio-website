@@ -1,0 +1,157 @@
+{% extends 'base.html' %} {% block title %}~/gallery - Portfolio{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 pt-24 pb-16">
+  <!-- Header -->
+  <div class="mb-12" data-aos="fade-down">
+    <div class="terminal inline-block px-4 py-2 mb-6">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">cd</span>
+      <span class="text-[#d29922]">~/gallery</span>
+    </div>
+    <h1 class="text-3xl font-bold text-[#c9d1d9] mb-4">
+      <span class="text-[#3fb950]">$</span>
+      <span class="text-[#58a6ff]">ls</span>
+      <span class="text-[#d29922]">-la</span> gallery/
+    </h1>
+    <p class="text-[#8b949e]">// Exploring media and visual content</p>
+  </div>
+
+  <!-- Type Filters -->
+  <div class="terminal mb-8" data-aos="fade-up">
+    <div class="terminal-header">
+      <span class="terminal-dot bg-[#f85149]"></span>
+      <span class="terminal-dot bg-[#d29922]"></span>
+      <span class="terminal-dot bg-[#3fb950]"></span>
+      <span class="text-[#8b949e] text-sm ml-4">filter --type</span>
+    </div>
+    <div class="terminal-body">
+      <div class="flex flex-wrap gap-2">
+        <a
+          href="{% url 'gallery_list' %}"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#d29922] hover:border-[#d29922] transition-all text-sm"
+        >
+          all
+        </a>
+        <a
+          href="?type=image"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#d29922] hover:border-[#d29922] transition-all text-sm"
+        >
+          images
+        </a>
+        <a
+          href="?type=video"
+          class="px-3 py-1 rounded border border-[#30363d] text-[#8b949e] hover:text-[#d29922] hover:border-[#d29922] transition-all text-sm"
+        >
+          videos
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Grid -->
+  {% if gallery_items %}
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for item in gallery_items %}
+    <div
+      class="terminal term-hover overflow-hidden"
+      data-aos="fade-up"
+      data-aos-delay="{{ forloop.counter|add:50 }}"
+    >
+      <div class="terminal-header">
+        <span class="terminal-dot bg-[#f85149]"></span>
+        <span class="terminal-dot bg-[#d29922]"></span>
+        <span class="terminal-dot bg-[#3fb950]"></span>
+        <span class="text-[#8b949e] text-xs ml-4">
+          {% if item.type == 'image' %} image_{{ forloop.counter }}.png {% else
+          %} video_{{ forloop.counter }}.mp4 {% endif %}
+        </span>
+        <span class="ml-auto text-[#8b949e] text-xs">{{ item.type }}</span>
+      </div>
+
+      <a href="{{ item.get_absolute_url }}">
+        {% if item.type == 'image' and item.image %}
+        <img
+          src="{{ item.image.url }}"
+          alt="{{ item.title }}"
+          class="w-full h-56 object-cover border-b border-[#30363d]"
+        />
+        {% elif item.type == 'image' and item.url %}
+        <img
+          src="{{ item.url }}"
+          alt="{{ item.title }}"
+          class="w-full h-56 object-cover border-b border-[#30363d]"
+        />
+        {% else %}
+        <div
+          class="w-full h-56 bg-gradient-to-br from-[#161b22] to-[#0a0e14] flex items-center justify-center border-b border-[#30363d]"
+        >
+          <i class="fas fa-play-circle text-5xl text-[#f85149]"></i>
+        </div>
+        {% endif %}
+
+        <div class="terminal-body">
+          <h3 class="text-lg font-bold text-[#c9d1d9] mb-2">
+            {{ item.title }}
+          </h3>
+          {% if item.description %}
+          <p class="text-sm text-[#8b949e] mb-3">
+            {{ item.description|truncatewords:15 }}
+          </p>
+          {% endif %}
+
+          <div class="flex items-center justify-between text-xs text-[#8b949e]">
+            <span>
+              {% if item.type == 'image' %}
+              <span class="text-[#bc8cff]">-rw-r--r--</span>
+              {% else %}
+              <span class="text-[#bc8cff]">-rwxr-xr-x</span>
+              {% endif %} user@portfolio
+            </span>
+            <span>{{ item.created_at|date:"M d Y" }}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="terminal" data-aos="fade-up">
+    <div class="terminal-body text-center py-12">
+      <p class="text-[#8b949e] mb-4">$ ls gallery/</p>
+      <p class="text-[#f85149]">directory is empty</p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Pagination -->
+  {% if is_paginated %}
+  <div class="mt-12 flex justify-center" data-aos="fade-up">
+    <div class="terminal inline-flex">
+      <div class="terminal-body flex items-center gap-4">
+        {% if page_obj.has_previous %}
+        <a
+          href="?page={{ page_obj.previous_page_number }}"
+          class="text-[#58a6ff] hover:text-[#3fb950] transition-colors"
+        >
+          <span class="text-[#3fb950]">←</span> prev
+        </a>
+        {% endif %}
+
+        <span class="text-[#c9d1d9]"
+          >Page {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
+        >
+
+        {% if page_obj.has_next %}
+        <a
+          href="?page={{ page_obj.next_page_number }}"
+          class="text-[#58a6ff] hover:text-[#3fb950] transition-colors"
+        >
+          next <span class="text-[#3fb950]">→</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
