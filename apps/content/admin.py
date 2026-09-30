@@ -77,9 +77,12 @@ class ProjectAdmin(admin.ModelAdmin):
     )
 
     def featured_status(self, obj):
+        # Fixed for Python 3.14: format_html requires an argument
         if obj.featured:
-            return format_html('<span style="color: #10b981;">✓ Featured</span>')
-        return format_html('<span style="color: #6b7280;">—</span>')
+            return format_html(
+                '<span style="color: #10b981;">{}</span>', "✓ Featured"
+            )
+        return format_html('<span style="color: #6b7280;">{}</span>', "—")
 
     featured_status.short_description = "Featured"
 
