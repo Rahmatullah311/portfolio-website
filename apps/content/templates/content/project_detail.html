@@ -1,100 +1,122 @@
-{% extends 'base.html' %} {% block title %}{{ project.title }} - ~/projects
-{% endblock %} {% block content %}
-<div class="max-w-4xl mx-auto px-4 pt-24 pb-16">
+{% extends 'base.html' %}
+{% block title %}{{ project.title }} - ~/projects{% endblock %}
+{% block content %}
+<div class="max-w-5xl mx-auto px-4 pt-24 pb-16">
   <!-- Breadcrumb -->
   <div class="mb-8" data-aos="fade-down">
-    <p class="text-sm text-[#8b949e]">
-      <a href="{% url 'home' %}" class="text-[#58a6ff] hover:text-[#3fb950]"
-        >~</a
-      >
+    <p class="text-sm font-mono text-[#8b949e]">
+      <a href="{% url 'home' %}" class="text-[#58a6ff] hover:text-[#3fb950]">~</a>
       <span class="text-[#3fb950]">/</span>
-      <a
-        href="{% url 'project_list' %}"
-        class="text-[#58a6ff] hover:text-[#3fb950]"
-        >projects</a
-      >
+      <a href="{% url 'project_list' %}" class="text-[#58a6ff] hover:text-[#3fb950]">projects</a>
       <span class="text-[#3fb950]">/</span>
       <span class="text-[#c9d1d9]">{{ project.slug }}</span>
     </p>
   </div>
 
-  <!-- Project Header -->
-  <div class="terminal mb-8" data-aos="fade-up">
-    <div class="terminal-header">
-      <span class="terminal-dot bg-[#f85149]"></span>
-      <span class="terminal-dot bg-[#d29922]"></span>
-      <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">project_details.md</span>
-    </div>
-    <div class="terminal-body">
-      <h1 class="text-3xl font-bold text-[#c9d1d9] mb-4">
-        {{ project.title }}
-      </h1>
-      <p class="text-lg text-[#8b949e] mb-6">{{ project.description }}</p>
-
-      {% if project.tech_stack %}
-      <div class="flex flex-wrap gap-2 mb-6">
-        {% for tech in project.tech_stack %}
-        <span
-          class="text-sm text-[#a5d6ff] bg-[#161b22] border border-[#30363d] px-3 py-1 rounded"
-        >
-          [{{ tech }}]
-        </span>
-        {% endfor %}
-      </div>
-      {% endif %}
-
-      <div class="flex gap-4">
-        {% if project.demo_url %}
-        <a
-          href="{{ project.demo_url }}"
-          target="_blank"
-          class="terminal inline-block px-6 py-3 term-hover"
-        >
-          <span class="text-[#3fb950]">➜</span>
-          <span class="text-[#58a6ff]">./live_demo</span>
-        </a>
-        {% endif %} {% if project.github_url %}
-        <a
-          href="{{ project.github_url }}"
-          target="_blank"
-          class="terminal inline-block px-6 py-3 term-hover"
-        >
-          <span class="text-[#3fb950]">➜</span>
-          <span class="text-[#58a6ff]">git clone</span>
-        </a>
-        {% endif %}
-      </div>
-    </div>
-  </div>
-
-  <!-- Project Image -->
-  {% if project.image %}
+  <!-- Hero: Full-Width Image with Overlay Title -->
   <div class="terminal mb-8 overflow-hidden" data-aos="fade-up">
     <div class="terminal-header">
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">screenshot.png</span>
+      <span class="text-[#8b949e] text-xs ml-4 font-mono">
+        project_{{ project.id|stringformat:"02d" }}.png
+      </span>
+      <span class="ml-auto text-[#8b949e] text-xs font-mono">
+        {{ project.created_at|date:"M d, Y" }}
+      </span>
     </div>
-    <img
-      src="{{ project.image.url }}"
-      alt="{{ project.title }}"
-      class="w-full"
-    />
-  </div>
-  {% endif %}
 
-  <!-- Full Content -->
+    <div class="relative">
+      {% if project.image %}
+      <img src="{{ project.image.url }}" alt="{{ project.title }}"
+           class="w-full h-72 md:h-[28rem] object-cover object-top" />
+      {% else %}
+      <div class="w-full h-72 md:h-[28rem] bg-gradient-to-br from-[#161b22] via-[#0d1117] to-[#161b22] relative overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 opacity-10"
+             style="background-image: linear-gradient(#58a6ff 1px, transparent 1px), linear-gradient(90deg, #58a6ff 1px, transparent 1px);
+                    background-size: 40px 40px;"></div>
+        <span class="relative text-[#58a6ff] text-9xl font-bold select-none">{{ project.title|slice:":1" }}</span>
+      </div>
+      {% endif %}
+
+      <!-- Gradient overlay with title -->
+      <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/85 to-transparent p-6 md:p-10">
+        {% if project.featured %}
+        <span class="inline-block text-xs font-mono text-[#d29922] bg-[#161b22] border border-[#d29922]/40 px-3 py-1 rounded mb-3">
+          ★ FEATURED
+        </span>
+        {% endif %}
+        <h1 class="text-3xl md:text-5xl font-bold text-white mb-3">{{ project.title }}</h1>
+        <p class="text-[#8b949e] md:text-lg font-mono">
+          <span class="text-[#3fb950]">$</span>
+          <span class="text-[#58a6ff]">cat</span> description.txt
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Overview Strip: Description + Tech Stack + Actions -->
+  <div class="terminal mb-8" data-aos="fade-up">
+    <div class="terminal-body space-y-6">
+      <p class="text-[#c9d1d9] text-lg leading-relaxed">{{ project.description }}</p>
+
+      {% if project.tech_stack %}
+      <div>
+        <p class="text-xs font-mono text-[#8b949e] mb-3">// tech_stack</p>
+        <div class="flex flex-wrap gap-2">
+          {% for tech in project.tech_stack %}
+          <span class="text-xs font-mono text-[#a5d6ff] bg-[#161b22] border border-[#30363d] px-3 py-1.5 rounded hover:border-[#58a6ff] transition-colors">
+            [{{ tech }}]
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap gap-3 pt-2">
+        {% if project.demo_url %}
+        <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#3fb950] rounded-lg hover:bg-[#3fb950] hover:text-[#0d1117] text-[#3fb950] transition-all text-sm font-mono">
+          <i class="fas fa-external-link-alt"></i>
+          <span>./live_demo</span>
+        </a>
+        {% endif %}
+
+        {% if project.github_url %}
+        <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#58a6ff] text-[#c9d1d9] transition-all text-sm font-mono">
+          <i class="fab fa-github"></i>
+          <span>git clone</span>
+        </a>
+        {% endif %}
+
+        <a href="{% url 'project_list' %}"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#bc8cff] text-[#bc8cff] transition-all text-sm font-mono">
+          <i class="fas fa-arrow-left"></i>
+          <span>cd ../</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- README Content -->
   <div class="terminal mb-8" data-aos="fade-up">
     <div class="terminal-header">
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">README.md</span>
+      <span class="text-[#8b949e] text-xs ml-4 font-mono">README.md</span>
     </div>
-    <div class="terminal-body prose prose-invert max-w-none">
-      {{ project.content|safe }}
+    <div class="terminal-body">
+      <p class="text-sm font-mono text-[#8b949e] mb-6">
+        <span class="text-[#3fb950]">$</span>
+        <span class="text-[#58a6ff]">cat</span> README.md
+      </p>
+      <div class="prose prose-invert prose-headings:text-[#c9d1d9] prose-a:text-[#58a6ff] prose-code:text-[#a5d6ff] prose-strong:text-white max-w-none">
+        {{ project.content|safe }}
+      </div>
     </div>
   </div>
 
@@ -104,75 +126,66 @@
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">feedback.log</span>
+      <span class="text-[#8b949e] text-xs ml-4 font-mono">feedback.log</span>
     </div>
     <div class="terminal-body">
-      <h2 class="text-xl font-bold text-[#c9d1d9] mb-6">
+      <p class="text-sm font-mono text-[#8b949e] mb-6">
         <span class="text-[#3fb950]">$</span>
         <span class="text-[#58a6ff]">cat</span> feedback.log
-      </h2>
+        <span class="text-[#8b949e]">| wc -l</span>
+        <span class="text-[#d29922] ml-2">{{ feedbacks|length }} entries</span>
+      </p>
 
       <!-- Feedback Form -->
-      <form
-        method="post"
-        action="{% url 'submit_feedback' %}"
-        class="mb-8 p-4 border border-[#30363d] rounded"
-      >
+      <form method="post" action="{% url 'submit_feedback' %}"
+            class="mb-8 p-5 border border-[#30363d] rounded-lg bg-[#0a0e14]/50">
         {% csrf_token %}
-        <input
-          type="hidden"
-          name="content_type_id"
-          value="{{ content_type.id }}"
-        />
+        <input type="hidden" name="content_type_id" value="{{ content_type.id }}" />
         <input type="hidden" name="object_id" value="{{ project.id }}" />
 
-        <div class="mb-4">
-          <label class="block text-[#8b949e] mb-2 text-sm"
-            >// Select rating:</label
-          >
-          <div class="flex gap-4">
+        <p class="text-sm font-mono text-[#58a6ff] mb-4">
+          <span class="text-[#3fb950]">➜</span> ./submit_feedback
+        </p>
+
+        <div class="mb-5">
+          <label class="block text-xs font-mono text-[#8b949e] mb-3">// select_rating</label>
+          <div class="flex flex-wrap gap-2">
             {% for choice in feedback_form.rating %}
-            <label
-              class="flex items-center gap-1 cursor-pointer text-[#d29922]"
-            >
+            <label class="cursor-pointer">
               {{ choice.tag }}
-              <span class="text-sm text-[#8b949e]"
-                >{{ choice.choice_label }}</span
-              >
+              <span class="inline-block text-sm font-mono text-[#8b949e] bg-[#161b22] border border-[#30363d] px-4 py-2 rounded-lg transition-all hover:border-[#d29922]">
+                {{ choice.choice_label }}
+              </span>
             </label>
             {% endfor %}
           </div>
         </div>
 
-        <div class="mb-4">
-          <label class="block text-[#8b949e] mb-2 text-sm"
-            >// Your comment:</label
-          >
+        <div class="mb-5">
+          <label class="block text-xs font-mono text-[#8b949e] mb-3">// your_comment</label>
           {{ feedback_form.comment }}
         </div>
 
-        <button
-          type="submit"
-          class="terminal inline-block px-6 py-3 term-hover"
-        >
-          <span class="text-[#3fb950]">➜</span>
-          <span class="text-[#58a6ff]">./submit_feedback</span>
+        <button type="submit"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#3fb950] rounded-lg hover:bg-[#3fb950] hover:text-[#0d1117] text-[#3fb950] transition-all text-sm font-mono">
+          <i class="fas fa-paper-plane"></i>
+          <span>submit</span>
         </button>
       </form>
 
       <!-- Existing Feedback -->
       {% if feedbacks %}
-      <div class="space-y-4">
-        <p class="text-[#8b949e] text-sm">// Recent feedback:</p>
+      <div class="space-y-3">
+        <p class="text-xs font-mono text-[#8b949e] mb-4">// recent_feedback</p>
         {% for feedback in feedbacks %}
-        <div class="border-l-2 border-[#58a6ff] pl-4 py-2">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-[#d29922]">
-              {% for i in "12345" %} {% if forloop.counter <= feedback.rating %}★{% else %}☆{% endif %} {% endfor %}
+        <div class="border-l-2 border-[#58a6ff] bg-[#161b22]/50 pl-4 py-3 rounded-r">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="text-[#d29922] text-lg tracking-widest">
+              {% for i in "12345" %}{% if forloop.counter <= feedback.rating %}★{% else %}☆{% endif %}{% endfor %}
             </span>
-            <span class="text-xs text-[#8b949e]"
-              >{{ feedback.created_at|date:"Y-m-d H:i" }}</span
-            >
+            <span class="text-xs font-mono text-[#8b949e]">
+              {{ feedback.created_at|date:"Y-m-d H:i" }}
+            </span>
           </div>
           {% if feedback.comment %}
           <p class="text-sm text-[#c9d1d9]">{{ feedback.comment }}</p>
@@ -181,9 +194,47 @@
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-[#8b949e] text-sm">// No feedback yet. Be the first!</p>
+      <div class="text-center py-6 border border-dashed border-[#30363d] rounded-lg">
+        <p class="text-sm font-mono text-[#8b949e]">
+          <span class="text-[#3fb950]">$</span> // no feedback yet — be the first!
+        </p>
+      </div>
       {% endif %}
     </div>
   </div>
 </div>
+
+<!-- Custom style for feedback widgets -->
+<style>
+  /* Fix the rating radio buttons — hide the ugly default input, style the label */
+  form input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  form input[type="radio"]:checked + span {
+    background: #d29922;
+    color: #0d1117;
+    border-color: #d29922;
+  }
+  /* Style the comment textarea */
+  form textarea {
+    width: 100%;
+    background: #0a0e14;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #c9d1d9;
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+  }
+  form textarea:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.15);
+  }
+</style>
 {% endblock %}

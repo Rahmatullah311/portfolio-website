@@ -1,18 +1,19 @@
-{% extends 'base.html' %} {% block title %}{{ snippet.title }} - ~/snippets{%
-endblock %} {% block content %}
+{% extends 'base.html' %}
+{% load snippet_filters %}
+
+{% block title %}{{ snippet.title }} - ~/snippets{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
 <div class="max-w-5xl mx-auto px-4 pt-24 pb-16">
   <!-- Breadcrumb -->
   <div class="mb-8" data-aos="fade-down">
-    <p class="text-sm text-[#8b949e]">
-      <a href="{% url 'home' %}" class="text-[#58a6ff] hover:text-[#3fb950]"
-        >~</a
-      >
+    <p class="text-xs sm:text-sm font-mono text-[#8b949e] break-all">
+      <a href="{% url 'home' %}" class="text-[#58a6ff] hover:text-[#3fb950]">~</a>
       <span class="text-[#3fb950]">/</span>
-      <a
-        href="{% url 'snippet_list' %}"
-        class="text-[#58a6ff] hover:text-[#3fb950]"
-        >snippets</a
-      >
+      <a href="{% url 'snippet_list' %}" class="text-[#58a6ff] hover:text-[#3fb950]">snippets</a>
       <span class="text-[#3fb950]">/</span>
       <span class="text-[#c9d1d9]">{{ snippet.slug }}</span>
     </p>
@@ -24,68 +25,106 @@ endblock %} {% block content %}
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4"
-        >{{ snippet.title }}.{{ snippet.language }}</span
-      >
-      <span class="ml-auto text-[#8b949e] text-xs">{{ snippet.language }}</span>
+      <span class="text-[#8b949e] text-xs ml-2 sm:ml-4 font-mono truncate">
+        {{ snippet.slug }}.{{ snippet.language }}
+      </span>
+      <span class="ml-auto text-[#bc8cff] text-xs font-mono px-2 py-0.5 bg-[#161b22] border border-[#30363d] rounded flex-shrink-0">
+        {{ snippet.language }}
+      </span>
     </div>
-    <div class="terminal-body">
-      <p class="text-sm text-[#8b949e] mb-4">
-        <span class="text-[#bc8cff]"
-          >"{{ snippet.title }}.{{ snippet.language }}"</span
-        >
-        [readonly]
-      </p>
 
-      <h1 class="text-2xl font-bold text-[#c9d1d9] mb-3">
+    <div class="terminal-body">
+      <h1 class="text-2xl sm:text-3xl font-bold text-[#c9d1d9] mb-3 leading-tight">
         {{ snippet.title }}
       </h1>
 
       {% if snippet.description %}
-      <p class="text-[#8b949e] mb-4">{{ snippet.description }}</p>
-      {% endif %} {% if snippet.tags %}
-      <div class="flex flex-wrap gap-2 mb-6">
+      <p class="text-sm sm:text-base text-[#8b949e] leading-relaxed mb-5">
+        {{ snippet.description }}
+      </p>
+      {% endif %}
+
+      {% if snippet.tags %}
+      <div class="flex flex-wrap gap-2 mb-5">
         {% for tag in snippet.tags %}
-        <span class="text-xs text-[#bc8cff]">#{{ tag }}</span>
+        <span class="text-xs font-mono text-[#bc8cff] bg-[#161b22] border border-[#30363d] px-2.5 py-1 rounded">
+          #{{ tag }}
+        </span>
         {% endfor %}
       </div>
       {% endif %}
 
       <div class="border-t border-[#30363d] pt-4">
-        <p class="text-sm text-[#8b949e]">
+        <p class="text-xs sm:text-sm font-mono text-[#8b949e] truncate">
           <span class="text-[#3fb950]">$</span>
-          <span class="text-[#58a6ff]">vim</span> {{ snippet.title }}.{{
-          snippet.language }}
+          <span class="text-[#58a6ff]">vim</span>
+          {{ snippet.slug }}.{{ snippet.language }}
+          <span class="text-[#d29922] ml-2">
+            [{{ snippet.code|length }} bytes]
+          </span>
         </p>
       </div>
     </div>
   </div>
 
-  <!-- Full Code Display -->
-  <div class="terminal mb-8" data-aos="fade-up">
+  <!-- Code Block -->
+  <div class="terminal mb-8 overflow-hidden" data-aos="fade-up">
     <div class="terminal-header">
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4"
-        >{{ snippet.title }}.{{ snippet.language }}</span
-      >
-      <button
-        onclick="copyCode()"
-        class="ml-auto text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
-      >
-        <i class="fas fa-copy mr-1"></i>copy
-      </button>
-    </div>
-    <div class="terminal-body">
-      <div
-        class="bg-[#0a0e14] border border-[#30363d] rounded p-6 overflow-x-auto"
-      >
-        <pre
-          class="text-sm text-[#c9d1d9] font-mono leading-relaxed"
-        ><code id="snippetCode">{{ snippet.code }}</code></pre>
+      <span class="text-[#8b949e] text-xs ml-2 sm:ml-4 font-mono truncate">
+        {{ snippet.slug }}.{{ snippet.language }}
+      </span>
+      <div class="ml-auto flex items-center gap-2">
+        <span class="hidden sm:inline text-[#8b949e] text-xs font-mono">
+          <span id="lineCount">{{ snippet.code|linecount }}</span> lines
+        </span>
+        <button
+          type="button"
+          id="copyBtn"
+          class="flex items-center gap-1.5 text-xs font-mono text-[#8b949e] hover:text-[#3fb950] transition-colors px-2 py-1 rounded hover:bg-[#0d1117] cursor-pointer"
+          aria-label="Copy code"
+        >
+          <i class="fas fa-copy" id="copyIcon"></i>
+          <span id="copyText">copy</span>
+        </button>
       </div>
     </div>
+
+    <div class="snippet-wrapper">
+      <table class="snippet-table">
+        <tbody>
+          {% for line in snippet.code|splitlines %}
+          <tr>
+            <td class="ln">{{ forloop.counter }}</td>
+            <td class="lc"><code class="language-{{ snippet.language }}">{{ line }}</code></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- Hidden full source for the copy button -->
+      <textarea id="snippetSource" hidden>{{ snippet.code }}</textarea>
+    </div>
+  </div>
+
+  <!-- Quick Actions Row -->
+  <div class="flex flex-wrap gap-2 mb-8" data-aos="fade-up">
+    <a href="{% url 'snippet_list' %}"
+       class="inline-flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#58a6ff] text-[#8b949e] hover:text-[#58a6ff] transition-all text-xs sm:text-sm font-mono">
+      <i class="fas fa-arrow-left"></i>
+      <span>cd ../snippets</span>
+    </a>
+    <button type="button" id="downloadBtn"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#3fb950] text-[#8b949e] hover:text-[#3fb950] transition-all text-xs sm:text-sm font-mono cursor-pointer">
+      <i class="fas fa-download"></i>
+      <span>download</span>
+    </button>
+    <button type="button" id="copyBtn2"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#bc8cff] text-[#8b949e] hover:text-[#bc8cff] transition-all text-xs sm:text-sm font-mono cursor-pointer">
+      <i class="fas fa-terminal"></i>
+      <span>cp to clipboard</span>
+    </button>
   </div>
 
   <!-- Feedback Section -->
@@ -94,109 +133,300 @@ endblock %} {% block content %}
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">feedback.log</span>
+      <span class="text-[#8b949e] text-xs ml-2 sm:ml-4 font-mono">feedback.log</span>
     </div>
+
     <div class="terminal-body">
-      <h2 class="text-xl font-bold text-[#c9d1d9] mb-6">
+      <p class="text-xs sm:text-sm font-mono text-[#8b949e] mb-6">
         <span class="text-[#3fb950]">$</span>
         <span class="text-[#58a6ff]">cat</span> feedback.log
-      </h2>
+        <span class="text-[#8b949e]">| wc -l</span>
+        <span class="text-[#d29922] ml-2">{{ feedbacks|length }} entries</span>
+      </p>
 
-      <!-- Feedback Form -->
-      <form
-        method="post"
-        action="{% url 'submit_feedback' %}"
-        class="mb-8 p-4 border border-[#30363d] rounded"
-      >
+      <form method="post" action="{% url 'submit_feedback' %}"
+            class="mb-8 p-4 sm:p-5 border border-[#30363d] rounded-lg bg-[#0a0e14]/50">
         {% csrf_token %}
-        <input
-          type="hidden"
-          name="content_type_id"
-          value="{{ content_type.id }}"
-        />
+        <input type="hidden" name="content_type_id" value="{{ content_type.id }}" />
         <input type="hidden" name="object_id" value="{{ snippet.id }}" />
 
-        <div class="mb-4">
-          <label class="block text-[#8b949e] mb-2 text-sm"
-            >// Select rating:</label
-          >
-          <div class="flex gap-4">
+        <p class="text-xs sm:text-sm font-mono text-[#58a6ff] mb-4">
+          <span class="text-[#3fb950]">➜</span> ./submit_feedback
+        </p>
+
+        <div class="mb-5">
+          <label class="block text-xs font-mono text-[#8b949e] mb-3">// select_rating</label>
+          <div class="flex flex-wrap gap-2">
             {% for choice in feedback_form.rating %}
-            <label
-              class="flex items-center gap-1 cursor-pointer text-[#d29922]"
-            >
+            <label class="cursor-pointer">
               {{ choice.tag }}
-              <span class="text-sm text-[#8b949e]"
-                >{{ choice.choice_label }}</span
-              >
+              <span class="inline-block text-xs sm:text-sm font-mono text-[#8b949e] bg-[#161b22] border border-[#30363d] px-3 py-2 rounded-lg transition-all hover:border-[#d29922]">
+                {{ choice.choice_label }}
+              </span>
             </label>
             {% endfor %}
           </div>
         </div>
 
-        <div class="mb-4">
-          <label class="block text-[#8b949e] mb-2 text-sm"
-            >// Your comment:</label
-          >
+        <div class="mb-5">
+          <label class="block text-xs font-mono text-[#8b949e] mb-3">// your_comment</label>
           {{ feedback_form.comment }}
         </div>
 
-        <button
-          type="submit"
-          class="terminal inline-block px-6 py-3 term-hover"
-        >
-          <span class="text-[#3fb950]">➜</span>
-          <span class="text-[#58a6ff]">./submit_feedback</span>
+        <button type="submit"
+                class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#3fb950] rounded-lg hover:bg-[#3fb950] hover:text-[#0d1117] text-[#3fb950] transition-all text-sm font-mono cursor-pointer">
+          <i class="fas fa-paper-plane"></i>
+          <span>submit</span>
         </button>
       </form>
 
-      <!-- Existing Feedback -->
       {% if feedbacks %}
-      <div class="space-y-4">
-        <p class="text-[#8b949e] text-sm">// Recent feedback:</p>
+      <div class="space-y-3">
+        <p class="text-xs font-mono text-[#8b949e] mb-4">// recent_feedback</p>
         {% for feedback in feedbacks %}
-        <div class="border-l-2 border-[#bc8cff] pl-4 py-2">
-          <div class="flex items-center gap-2 mb-1">
-            <span class="text-[#d29922]">
-              {% for i in "12345" %} {% if forloop.counter <= feedback.rating
-              %}★{% else %}☆{% endif %} {% endfor %}
+        <div class="border-l-2 border-[#bc8cff] bg-[#161b22]/50 pl-4 py-3 rounded-r">
+          <div class="flex items-center gap-3 mb-2 flex-wrap">
+            <span class="text-[#d29922] text-base sm:text-lg tracking-widest">
+              {% for i in "12345" %}{% if forloop.counter <= feedback.rating %}★{% else %}☆{% endif %}{% endfor %}
             </span>
-            <span class="text-xs text-[#8b949e]"
-              >{{ feedback.created_at|date:"Y-m-d H:i" }}</span
-            >
+            <span class="text-xs font-mono text-[#8b949e]">
+              {{ feedback.created_at|date:"Y-m-d H:i" }}
+            </span>
           </div>
           {% if feedback.comment %}
-          <p class="text-sm text-[#c9d1d9]">{{ feedback.comment }}</p>
+          <p class="text-sm text-[#c9d1d9] leading-relaxed">{{ feedback.comment }}</p>
           {% endif %}
         </div>
         {% endfor %}
       </div>
       {% else %}
-      <p class="text-[#8b949e] text-sm">// No feedback yet. Be the first!</p>
+      <div class="text-center py-6 border border-dashed border-[#30363d] rounded-lg">
+        <p class="text-sm font-mono text-[#8b949e]">
+          <span class="text-[#3fb950]">$</span> // no feedback yet — be the first!
+        </p>
+      </div>
       {% endif %}
     </div>
   </div>
 </div>
 
+<style>
+  /* ─── Snippet code table ─── */
+  .snippet-wrapper {
+    background: #0a0e14;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .snippet-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #c9d1d9;
+  }
+
+  @media (min-width: 640px) {
+    .snippet-table { font-size: 14px; }
+  }
+
+  .snippet-table td {
+    padding: 0;
+    vertical-align: top;
+  }
+
+  /* Line number column */
+  .snippet-table .ln {
+    width: 1%;
+    padding: 0 14px 0 16px;
+    text-align: right;
+    color: #484f58;
+    user-select: none;
+    border-right: 1px solid #30363d;
+    white-space: nowrap;
+    background: #0a0e14;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+  }
+
+  @media (min-width: 640px) {
+    .snippet-table .ln {
+      padding: 0 20px 0 24px;
+    }
+  }
+
+  /* Code column */
+  .snippet-table .lc {
+    padding: 0 20px;
+    white-space: pre;
+    color: #c9d1d9;
+  }
+
+  @media (min-width: 640px) {
+    .snippet-table .lc {
+      padding: 0 24px;
+    }
+  }
+
+  .snippet-table .lc code {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    white-space: pre;
+  }
+
+  /* Override Highlight.js default background */
+  .snippet-table .lc code.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  /* ─── Feedback form widgets ─── */
+  form input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  form input[type="radio"]:checked + span {
+    background: #d29922;
+    color: #0d1117;
+    border-color: #d29922;
+    font-weight: 600;
+  }
+  form textarea {
+    width: 100%;
+    background: #0a0e14;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #c9d1d9;
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  form textarea:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 2px rgba(88, 166, 255, 0.15);
+  }
+  form textarea::placeholder { color: #6e7681; }
+
+  /* Copy button success state */
+  #copyBtn.copied { color: #3fb950; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    /* Highlight each line individually */
+    document.querySelectorAll(".snippet-table .lc code").forEach((el) => {
+      if (window.hljs) {
+        hljs.highlightElement(el);
+      }
+    });
+
+    /* Wire up copy buttons */
+    const copyBtn = document.getElementById("copyBtn");
+    const copyBtn2 = document.getElementById("copyBtn2");
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    if (copyBtn) copyBtn.addEventListener("click", copyCode);
+    if (copyBtn2) copyBtn2.addEventListener("click", copyCode);
+    if (downloadBtn) downloadBtn.addEventListener("click", downloadSnippet);
+  });
+
+  /* ─── Copy to clipboard ─── */
   function copyCode() {
-    const code = document.getElementById("snippetCode").textContent;
-    navigator.clipboard
-      .writeText(code)
-      .then(() => {
-        alert("$ Code copied to clipboard!");
-      })
-      .catch((err) => {
-        console.error("Failed to copy: ", err);
-        // Fallback
-        const textarea = document.createElement("textarea");
-        textarea.value = code;
-        document.body.appendChild(textarea);
-        textarea.select();
+    const src = document.getElementById("snippetSource");
+    const code = src ? src.value : "";
+    const btn = document.getElementById("copyBtn");
+    const icon = document.getElementById("copyIcon");
+    const label = document.getElementById("copyText");
+
+    const onSuccess = () => {
+      if (btn && icon && label) {
+        btn.classList.add("copied");
+        icon.className = "fas fa-check";
+        label.textContent = "copied!";
+        setTimeout(() => {
+          btn.classList.remove("copied");
+          icon.className = "fas fa-copy";
+          label.textContent = "copy";
+        }, 2000);
+      }
+    };
+
+    const fallback = () => {
+      const ta = document.createElement("textarea");
+      ta.value = code;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
         document.execCommand("copy");
-        document.body.removeChild(textarea);
-        alert("$ Code copied to clipboard!");
-      });
+        onSuccess();
+      } catch (e) {
+        console.error("Copy failed:", e);
+      }
+      document.body.removeChild(ta);
+    };
+
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(onSuccess).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  /* ─── Download as file ─── */
+  function downloadSnippet() {
+    const src = document.getElementById("snippetSource");
+    const code = src ? src.value : "";
+    const slug = "{{ snippet.slug|escapejs }}";
+    const lang = "{{ snippet.language|escapejs }}";
+
+    const extMap = {
+      python: "py", py: "py",
+      javascript: "js", js: "js",
+      typescript: "ts", ts: "ts",
+      bash: "sh", shell: "sh", sh: "sh", zsh: "zsh",
+      css: "css", scss: "scss",
+      html: "html", xml: "xml",
+      json: "json", yaml: "yml", yml: "yml",
+      sql: "sql",
+      go: "go", rust: "rs",
+      java: "java", kotlin: "kt",
+      ruby: "rb", php: "php",
+      c: "c", cpp: "cpp", csharp: "cs", cs: "cs",
+      dockerfile: "Dockerfile",
+      markdown: "md", md: "md",
+      text: "txt", plaintext: "txt",
+    };
+
+    const ext = extMap[lang.toLowerCase()] || "txt";
+    const filename = ext === "Dockerfile" ? "Dockerfile" : `${slug}.${ext}`;
+
+    const blob = new Blob([code], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 </script>
 {% endblock %}
