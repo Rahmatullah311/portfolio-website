@@ -1,418 +1,536 @@
-{% extends 'base.html' %} {% block title %}~/portfolio - Home{% endblock %} 
+{% extends 'base.html' %}
+{% block title %}~/rahmat - Home{% endblock %}
 {% block content %}
-<!-- Hero Section -->
-<div class="min-h-screen flex items-center justify-center relative pt-20">
+
+<!-- ══════════════════════════════════════════════════════════════
+     HERO — compact intro, not full-screen (better for mobile)
+════════════════════════════════════════════════════════════════ -->
+<section class="relative pt-24 pb-12 md:pt-32 md:pb-20">
   <div class="max-w-6xl mx-auto px-4">
-    <!-- ASCII Art Header -->
-    <div class="text-center mb-12" data-aos="fade-down">
-      <pre class="ascii-art text-xs md:text-sm inline-block text-left">
+
+    <!-- ASCII name -->
+    <div class="text-center mb-10" data-aos="fade-down">
+      <div class="inline-block overflow-x-auto max-w-full pb-2">
+        <pre class="ascii-art text-left">
  _   _      _ _        __        __         _      _ 
 | | | | ___| | | ___   \ \      / /__  _ __| | __| |
 | |_| |/ _ \ | |/ _ \   \ \ /\ / / _ \| '__| |/ _` |
 |  _  |  __/ | | (_) |   \ V  V / (_) | |  | | (_| |
 |_| |_|\___|_|_|\___/     \_/\_/ \___/|_|  |_|\__,_|
-            </pre
-      >
+        </pre>
+      </div>
     </div>
 
-    <!-- Terminal Window with Interactive Element -->
-    <div class="terminal max-w-3xl mx-auto mb-8" data-aos="zoom-in">
+    <!-- Terminal bio -->
+    <div class="terminal max-w-3xl mx-auto mb-10" data-aos="zoom-in">
       <div class="terminal-header">
         <span class="terminal-dot bg-[#f85149]"></span>
         <span class="terminal-dot bg-[#d29922]"></span>
         <span class="terminal-dot bg-[#3fb950]"></span>
-        <span class="text-[#8b949e] text-sm ml-4">user@portfolio: ~</span>
+        <span class="text-[#8b949e] text-xs sm:text-sm ml-3 truncate">user@portfolio: ~</span>
       </div>
-      <div class="terminal-body">
-        <div class="space-y-4">
-          <p>
-            <span class="text-[#3fb950]">➜</span>
-            <span class="text-[#58a6ff]">whoami</span>
-          </p>
-          <p class="text-[#c9d1d9] pl-4">Full Stack Developer</p>
+      <div class="terminal-body text-sm sm:text-base space-y-3">
+        <p>
+          <span class="text-[#3fb950]">➜</span>
+          <span class="text-[#58a6ff]">whoami</span>
+        </p>
+        <p class="text-[#c9d1d9] pl-5">Full Stack Developer</p>
 
-          <p>
-            <span class="text-[#3fb950]">➜</span>
-            <span class="text-[#58a6ff]">cat</span>
-            <span class="text-[#d29922]">skills.json</span>
-          </p>
-          <div class="pl-4">
-            <p class="text-[#c9d1d9]">{</p>
-            <p class="pl-4">
-              <span class="text-[#58a6ff]">"languages"</span>: [<span
-                class="text-[#a5d6ff]"
-                >"Python"</span
-              >, <span class="text-[#a5d6ff]">"JavaScript"</span>,
-              <span class="text-[#a5d6ff]">"TypeScript"</span>],
-            </p>
-            <p class="pl-4">
-              <span class="text-[#58a6ff]">"frameworks"</span>: [<span
-                class="text-[#a5d6ff]"
-                >"Django"</span
-              >, <span class="text-[#a5d6ff]">"React"</span>,
-              <span class="text-[#a5d6ff]">"Node.js"</span>],
-            </p>
-            <p class="pl-4">
-              <span class="text-[#58a6ff]">"databases"</span>: [<span
-                class="text-[#a5d6ff]"
-                >"PostgreSQL"</span
-              >, <span class="text-[#a5d6ff]">"Redis"</span>]
-            </p>
-            <p class="text-[#c9d1d9]">}</p>
-          </div>
-
-          <p>
-            <span class="text-[#3fb950]">➜</span>
-            <span class="text-[#58a6ff]">git</span>
-            <span class="text-[#d29922]">status</span>
+        <p>
+          <span class="text-[#3fb950]">➜</span>
+          <span class="text-[#58a6ff]">cat</span>
+          <span class="text-[#d29922]">skills.json</span>
+        </p>
+        <div class="pl-5 space-y-1 text-xs sm:text-sm">
+          <p class="text-[#c9d1d9]">{</p>
+          <p class="pl-4">
+            <span class="text-[#58a6ff]">"languages"</span>:
+            [<span class="text-[#a5d6ff]">"Python"</span>,
+            <span class="text-[#a5d6ff]">"JavaScript"</span>,
+            <span class="text-[#a5d6ff]">"TypeScript"</span>],
           </p>
           <p class="pl-4">
-            <span class="text-[#3fb950]">✓</span> On branch main - All systems
-            operational
+            <span class="text-[#58a6ff]">"frameworks"</span>:
+            [<span class="text-[#a5d6ff]">"Django"</span>,
+            <span class="text-[#a5d6ff]">"React"</span>,
+            <span class="text-[#a5d6ff]">"Node.js"</span>],
           </p>
-
-          <p>
-            <span class="text-[#3fb950]">➜</span>
-            <span class="text-[#58a6ff]">./launch_portfolio</span
-            ><span class="cursor"></span>
+          <p class="pl-4">
+            <span class="text-[#58a6ff]">"databases"</span>:
+            [<span class="text-[#a5d6ff]">"PostgreSQL"</span>,
+            <span class="text-[#a5d6ff]">"Redis"</span>]
           </p>
+          <p class="text-[#c9d1d9]">}</p>
         </div>
+
+        <p>
+          <span class="text-[#3fb950]">➜</span>
+          <span class="text-[#58a6ff]">git</span>
+          <span class="text-[#d29922]">status</span>
+        </p>
+        <p class="pl-5 text-[#3fb950]">✓ On branch main - All systems operational</p>
+
+        <p>
+          <span class="text-[#3fb950]">➜</span>
+          <span class="text-[#58a6ff]">./launch_portfolio</span><span class="cursor"></span>
+        </p>
       </div>
     </div>
 
-    <!-- Action Buttons as Commands -->
-    <div class="text-center space-x-4" data-aos="fade-up">
-      <a
-        href="{% url 'project_list' %}"
-        class="inline-block px-8 py-4 bg-[#0d1117] border border-[#30363d] rounded-lg term-hover text-[#c9d1d9]"
-      >
-        <span class="text-[#3fb950] font-bold">➜</span>
-        <span class="text-[#58a6ff] font-mono">./view_projects</span>
+    <!-- CTA buttons -->
+    <div class="flex flex-wrap justify-center gap-3" data-aos="fade-up">
+      <a href="{% url 'project_list' %}"
+         class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#3fb950] rounded-lg hover:bg-[#3fb950] hover:text-[#0d1117] text-[#3fb950] transition-all text-sm font-mono">
+        <i class="fas fa-code"></i>
+        <span>./view_projects</span>
       </a>
-      <a
-        href="{% url 'article_list' %}"
-        class="inline-block px-8 py-4 bg-[#0d1117] border border-[#30363d] rounded-lg term-hover text-[#c9d1d9]"
-      >
-        <span class="text-[#3fb950] font-bold">➜</span>
-        <span class="text-[#58a6ff] font-mono">./read_articles</span>
+      <a href="{% url 'article_list' %}"
+         class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#58a6ff] rounded-lg hover:bg-[#58a6ff] hover:text-[#0d1117] text-[#58a6ff] transition-all text-sm font-mono">
+        <i class="fas fa-book"></i>
+        <span>./read_articles</span>
       </a>
     </div>
-  </div>
-</div>
 
-<!-- Stats as System Info -->
-<div class="max-w-6xl mx-auto px-4 py-16">
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     STATS — 2×2 on mobile, 4×1 on desktop
+════════════════════════════════════════════════════════════════ -->
+<section class="max-w-6xl mx-auto px-4 py-8 md:py-12">
   <div class="terminal" data-aos="fade-up">
     <div class="terminal-header">
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">system_monitor</span>
+      <span class="text-[#8b949e] text-xs sm:text-sm ml-3 truncate">system_monitor --stats</span>
     </div>
     <div class="terminal-body">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="text-center p-4 border border-[#30363d] rounded">
-          <div
-            class="text-3xl font-bold text-[#58a6ff]"
-            data-counter="{{ featured_projects|length }}"
-          >
-            0
-          </div>
-          <div class="text-sm text-[#8b949e] mt-1">// projects</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+        <div class="text-center p-3 md:p-4 border border-[#30363d] rounded-lg hover:border-[#58a6ff] transition-colors">
+          <div class="text-2xl md:text-3xl font-bold text-[#58a6ff]"
+               data-counter="{{ featured_projects|length }}">0</div>
+          <div class="text-xs md:text-sm text-[#8b949e] mt-1 font-mono">// projects</div>
         </div>
-        <div class="text-center p-4 border border-[#30363d] rounded">
-          <div
-            class="text-3xl font-bold text-[#3fb950]"
-            data-counter="{{ latest_articles|length }}"
-          >
-            0
-          </div>
-          <div class="text-sm text-[#8b949e] mt-1">// articles</div>
+        <div class="text-center p-3 md:p-4 border border-[#30363d] rounded-lg hover:border-[#3fb950] transition-colors">
+          <div class="text-2xl md:text-3xl font-bold text-[#3fb950]"
+               data-counter="{{ latest_articles|length }}">0</div>
+          <div class="text-xs md:text-sm text-[#8b949e] mt-1 font-mono">// articles</div>
         </div>
-        <div class="text-center p-4 border border-[#30363d] rounded">
-          <div
-            class="text-3xl font-bold text-[#bc8cff]"
-            data-counter="{{ recent_snippets|length }}"
-          >
-            0
-          </div>
-          <div class="text-sm text-[#8b949e] mt-1">// snippets</div>
+        <div class="text-center p-3 md:p-4 border border-[#30363d] rounded-lg hover:border-[#bc8cff] transition-colors">
+          <div class="text-2xl md:text-3xl font-bold text-[#bc8cff]"
+               data-counter="{{ recent_snippets|length }}">0</div>
+          <div class="text-xs md:text-sm text-[#8b949e] mt-1 font-mono">// snippets</div>
         </div>
-        <div class="text-center p-4 border border-[#30363d] rounded">
-          <div
-            class="text-3xl font-bold text-[#d29922]"
-            data-counter="{{ gallery_preview|length }}"
-          >
-            0
-          </div>
-          <div class="text-sm text-[#8b949e] mt-1">// media</div>
+        <div class="text-center p-3 md:p-4 border border-[#30363d] rounded-lg hover:border-[#d29922] transition-colors">
+          <div class="text-2xl md:text-3xl font-bold text-[#d29922]"
+               data-counter="{{ gallery_preview|length }}">0</div>
+          <div class="text-xs md:text-sm text-[#8b949e] mt-1 font-mono">// media</div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<!-- Featured Projects as Directory Listing -->
-<div class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-2xl font-bold mb-8" data-aos="fade-up">
-    <span class="text-[#3fb950]">➜</span> <span class="text-[#58a6ff]">ls</span>
-    <span class="text-[#d29922]">projects/</span>
-  </h2>
+<!-- ══════════════════════════════════════════════════════════════
+     FEATURED PROJECTS
+════════════════════════════════════════════════════════════════ -->
+<section class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+  <div class="flex items-end justify-between mb-8 flex-wrap gap-3" data-aos="fade-up">
+    <h2 class="text-xl md:text-2xl font-bold">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">ls</span>
+      <span class="text-[#d29922]">projects/</span>
+    </h2>
+    <a href="{% url 'project_list' %}"
+       class="text-xs font-mono text-[#8b949e] hover:text-[#58a6ff] transition-colors">
+      view_all →
+    </a>
+  </div>
 
   {% if featured_projects %}
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="space-y-8 md:space-y-12">
     {% for project in featured_projects %}
-    <div
-      class="terminal term-hover"
-      data-aos="fade-up"
-      data-aos-delay="{{ forloop.counter|add:100 }}"
-    >
+    <article class="terminal term-hover" data-aos="fade-up"
+             data-aos-delay="{{ forloop.counter|add:50 }}">
       <div class="terminal-header">
         <span class="terminal-dot bg-[#f85149]"></span>
         <span class="terminal-dot bg-[#d29922]"></span>
         <span class="terminal-dot bg-[#3fb950]"></span>
-        <span class="text-[#8b949e] text-xs ml-4"
-          >project_{% if project.id < 10 %}0{% endif %}{{ forloop.counter
-          }}</span
-        >
+        <span class="text-[#8b949e] text-xs ml-3 truncate">
+          project_{{ forloop.counter|stringformat:"02d" }}.png
+        </span>
+        <span class="ml-auto text-[#8b949e] text-xs hidden sm:inline">
+          {{ project.created_at|date:"M d, Y" }}
+        </span>
       </div>
-      <div class="terminal-body">
-        <a href="{{ project.get_absolute_url }}">
-          <p class="mb-3">
+
+      <a href="{{ project.get_absolute_url }}" class="block relative group overflow-hidden">
+        {% if project.image %}
+        <img src="{{ project.image.url }}" alt="{{ project.title }}"
+             class="w-full h-48 sm:h-64 md:h-80 object-cover object-top border-b border-[#30363d] group-hover:scale-[1.02] transition-transform duration-500" />
+        {% else %}
+        <div class="w-full h-48 sm:h-64 md:h-80 bg-gradient-to-br from-[#161b22] via-[#0d1117] to-[#161b22] border-b border-[#30363d] flex items-center justify-center relative overflow-hidden">
+          <div class="absolute inset-0 opacity-10"
+               style="background-image: linear-gradient(#58a6ff 1px, transparent 1px), linear-gradient(90deg, #58a6ff 1px, transparent 1px); background-size: 40px 40px;"></div>
+          <span class="relative text-[#58a6ff] text-7xl md:text-9xl font-bold select-none">
+            {{ project.title|slice:":1" }}
+          </span>
+        </div>
+        {% endif %}
+
+        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0d1117] via-[#0d1117]/85 to-transparent p-4 md:p-6">
+          <h3 class="text-xl md:text-3xl font-bold text-white mb-1">{{ project.title }}</h3>
+          <p class="text-xs md:text-sm text-[#8b949e] font-mono">
             <span class="text-[#3fb950]">$</span>
-            <span class="text-[#58a6ff]">cat</span> README.md
+            <span class="text-[#58a6ff]">cat</span> description.txt
           </p>
-          <h3 class="text-lg font-bold text-[#c9d1d9] mb-2">
-            {{ project.title }}
-          </h3>
-          <p class="text-sm text-[#8b949e] mb-4">
-            {{ project.description|truncatewords:15 }}
-          </p>
+        </div>
+      </a>
 
-          {% if project.tech_stack %}
-          <div class="flex flex-wrap gap-2 mb-4">
-            {% for tech in project.tech_stack|slice:":3" %}
-            <span
-              class="text-xs text-[#a5d6ff] bg-[#161b22] border border-[#30363d] px-2 py-1 rounded"
-              >[{{ tech }}]</span
-            >
-            {% endfor %}
-          </div>
+      <div class="terminal-body">
+        <p class="text-sm md:text-base text-[#8b949e] mb-4 leading-relaxed">
+          {{ project.description }}
+        </p>
+
+        {% if project.tech_stack %}
+        <div class="flex flex-wrap gap-2 mb-5">
+          {% for tech in project.tech_stack %}
+          <span class="text-xs font-mono text-[#a5d6ff] bg-[#161b22] border border-[#30363d] px-2.5 py-1 rounded">
+            [{{ tech }}]
+          </span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="flex flex-wrap gap-2 md:gap-3">
+          {% if project.demo_url %}
+          <a href="{{ project.demo_url }}" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-[#3fb950] rounded-lg hover:bg-[#3fb950] hover:text-[#0d1117] text-[#3fb950] transition-all text-xs md:text-sm font-mono">
+            <i class="fas fa-external-link-alt"></i>
+            <span>./live_demo</span>
+          </a>
           {% endif %}
-
-          <p class="text-xs text-[#8b949e]">
-            <span class="text-[#bc8cff]">drwxr-xr-x</span> user@portfolio {{
-            project.created_at|date:"M d" }}
-          </p>
-        </a>
+          {% if project.github_url %}
+          <a href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#58a6ff] text-[#c9d1d9] transition-all text-xs md:text-sm font-mono">
+            <i class="fab fa-github"></i>
+            <span>git clone</span>
+          </a>
+          {% endif %}
+          <a href="{{ project.get_absolute_url }}"
+             class="inline-flex items-center gap-2 px-4 py-2 bg-[#161b22] border border-[#30363d] rounded-lg hover:border-[#bc8cff] text-[#bc8cff] transition-all text-xs md:text-sm font-mono">
+            <i class="fas fa-file-alt"></i>
+            <span>cat README</span>
+          </a>
+        </div>
       </div>
-    </div>
+    </article>
     {% endfor %}
   </div>
   {% else %}
   <div class="terminal">
-    <div class="terminal-body">
-      <p>
-        <span class="text-[#3fb950]">$</span>
-        <span class="text-[#58a6ff]">find</span> projects/ -type f
-      </p>
+    <div class="terminal-body font-mono text-sm">
+      <p><span class="text-[#3fb950]">$</span> <span class="text-[#58a6ff]">find</span> projects/ -type f</p>
       <p class="text-[#f85149] mt-2">No files found</p>
     </div>
   </div>
   {% endif %}
-</div>
+</section>
 
-<!-- Articles as Log Files -->
-<div class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-2xl font-bold mb-8" data-aos="fade-up">
-    <span class="text-[#3fb950]">➜</span>
-    <span class="text-[#58a6ff]">tail</span>
-    <span class="text-[#d29922]">articles.log</span>
-  </h2>
+<!-- ══════════════════════════════════════════════════════════════
+     ARTICLES — Cleaner log-style list
+════════════════════════════════════════════════════════════════ -->
+<section class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+  <div class="flex items-end justify-between mb-8 flex-wrap gap-3" data-aos="fade-up">
+    <h2 class="text-xl md:text-2xl font-bold">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">tail</span>
+      <span class="text-[#d29922]">articles.log</span>
+    </h2>
+    <a href="{% url 'article_list' %}"
+       class="text-xs font-mono text-[#8b949e] hover:text-[#58a6ff] transition-colors">
+      view_all →
+    </a>
+  </div>
 
   {% if latest_articles %}
-  <div class="space-y-4">
+  <div class="space-y-3">
     {% for article in latest_articles %}
-    <div
-      class="terminal term-hover"
-      data-aos="fade-left"
-      data-aos-delay="{{ forloop.counter|add:50 }}"
-    >
-      <div class="terminal-body">
-        <a href="{{ article.get_absolute_url }}">
-          <p class="text-sm text-[#8b949e] mb-2">
+    <a href="{{ article.get_absolute_url }}"
+       class="block terminal term-hover p-4 md:p-5"
+       data-aos="fade-left" data-aos-delay="{{ forloop.counter|add:50 }}">
+      <div class="flex items-start gap-3 md:gap-4">
+        <div class="w-2 h-2 rounded-full bg-[#3fb950] mt-2 flex-shrink-0"></div>
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-mono text-[#8b949e] mb-1">
             [{{ article.created_at|date:"Y-m-d H:i" }}]
-            <span class="text-[#3fb950]">INFO</span> - New article published
           </p>
-          <h3 class="text-lg font-bold text-[#c9d1d9] mb-2">
+          <h3 class="text-base md:text-lg font-bold text-[#c9d1d9] mb-1 hover:text-[#58a6ff] transition-colors break-words">
             {{ article.title }}
           </h3>
-          <p class="text-sm text-[#8b949e]">
-            {{ article.content|truncatewords:20 }}
+          <p class="text-xs md:text-sm text-[#8b949e] line-clamp-2">
+            {{ article.content|striptags|truncatewords:22 }}
           </p>
-        </a>
+        </div>
+        <span class="text-[#8b949e] hover:text-[#3fb950] transition-colors flex-shrink-0 mt-1">→</span>
       </div>
-    </div>
+    </a>
     {% endfor %}
   </div>
   {% else %}
   <div class="terminal">
-    <div class="terminal-body">
-      <p>
-        <span class="text-[#3fb950]">$</span>
-        <span class="text-[#58a6ff]">tail</span> articles.log
-      </p>
+    <div class="terminal-body font-mono text-sm">
+      <p><span class="text-[#3fb950]">$</span> <span class="text-[#58a6ff]">tail</span> articles.log</p>
       <p class="text-[#8b949e] mt-2">No logs found</p>
     </div>
   </div>
   {% endif %}
-</div>
+</section>
 
-<!-- Snippets as Code Files -->
-<div class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-2xl font-bold mb-8" data-aos="fade-up">
-    <span class="text-[#3fb950]">➜</span>
-    <span class="text-[#58a6ff]">vim</span>
-    <span class="text-[#d29922]">snippets/</span>
-  </h2>
+<!-- ══════════════════════════════════════════════════════════════
+     SNIPPETS — Featured snippet as live code + compact list
+════════════════════════════════════════════════════════════════ -->
+<section class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+  <div class="flex items-end justify-between mb-8 flex-wrap gap-3" data-aos="fade-up">
+    <h2 class="text-xl md:text-2xl font-bold">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">cat</span>
+      <span class="text-[#d29922]">snippets/*</span>
+    </h2>
+    <a href="{% url 'snippet_list' %}"
+       class="text-xs font-mono text-[#8b949e] hover:text-[#58a6ff] transition-colors">
+      view_all →
+    </a>
+  </div>
 
   {% if recent_snippets %}
-  <div class="space-y-4">
-    {% for snippet in recent_snippets %}
-    <div
-      class="terminal term-hover"
-      data-aos="fade-left"
-      data-aos-delay="{{ forloop.counter|add:50 }}"
-    >
+  <div class="space-y-6">
+
+    <!-- ═══ Featured snippet (full width, big code preview) ═══ -->
+    {% with featured=recent_snippets.0 %}
+    <article class="terminal term-hover" data-aos="fade-up">
       <div class="terminal-header">
         <span class="terminal-dot bg-[#f85149]"></span>
         <span class="terminal-dot bg-[#d29922]"></span>
         <span class="terminal-dot bg-[#3fb950]"></span>
-        <span class="text-[#8b949e] text-xs ml-4"
-          >{{ snippet.title }}.{{ snippet.language }}</span
-        >
+        <span class="text-[#8b949e] text-xs ml-2 sm:ml-4 font-mono truncate">
+          {{ featured.slug }}.{{ featured.language }}
+        </span>
+        <span class="ml-auto text-[#bc8cff] text-xs font-mono px-2 py-0.5 bg-[#161b22] border border-[#30363d] rounded flex-shrink-0">
+          {{ featured.language }}
+        </span>
       </div>
-      <div class="terminal-body">
-        <a href="{{ snippet.get_absolute_url }}">
-          <p class="text-sm text-[#8b949e] mb-2">
-            <span class="text-[#bc8cff]"
-              >"{{ snippet.title }}.{{ snippet.language }}"</span
-            >
-            [readonly]
-          </p>
-          <h3 class="text-lg font-bold text-[#c9d1d9] mb-2">
-            {{ snippet.title }}
+
+      <a href="{{ featured.get_absolute_url }}" class="block group">
+        <!-- Meta strip -->
+        <div class="px-4 sm:px-6 pt-5 pb-3">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-[10px] font-mono text-[#d29922] bg-[#161b22] border border-[#d29922]/40 px-2 py-0.5 rounded">
+              ★ FEATURED
+            </span>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold text-[#c9d1d9] mb-2 group-hover:text-[#58a6ff] transition-colors">
+            {{ featured.title }}
           </h3>
-          <p class="text-sm text-[#8b949e]">
-            {{ snippet.description|truncatewords:15 }}
+          {% if featured.description %}
+          <p class="text-sm text-[#8b949e] leading-relaxed">
+            {{ featured.description }}
           </p>
-        </a>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
-  {% else %}
-  <div class="terminal">
-    <div class="terminal-body">
-      <p>
-        <span class="text-[#3fb950]">$</span>
-        <span class="text-[#58a6ff]">ls</span> snippets/
-      </p>
-      <p class="text-[#8b949e] mt-2">directory is empty</p>
-    </div>
-  </div>
-  {% endif %}
-</div>
-
-<!-- Gallery as File Explorer -->
-<div class="max-w-6xl mx-auto px-4 py-16">
-  <h2 class="text-2xl font-bold mb-8" data-aos="fade-up">
-    <span class="text-[#3fb950]">➜</span>
-    <span class="text-[#58a6ff]">open</span>
-    <span class="text-[#d29922]">gallery/</span>
-  </h2>
-
-  {% if gallery_preview %}
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-    {% for item in gallery_preview %}
-    <div
-      class="terminal term-hover overflow-hidden"
-      data-aos="zoom-in"
-      data-aos-delay="{{ forloop.counter|add:50 }}"
-    >
-      <a href="{{ item.get_absolute_url }}">
-        {% if item.type == 'image' and item.image %}
-        <img
-          src="{{ item.image.url }}"
-          alt="{{ item.title }}"
-          class="w-full h-40 object-cover"
-        />
-        {% elif item.type == 'image' and item.url %}
-        <img
-          src="{{ item.url }}"
-          alt="{{ item.title }}"
-          class="w-full h-40 object-cover"
-        />
-        {% else %}
-        <div
-          class="w-full h-40 bg-gradient-to-r from-[#bc8cff] to-[#58a6ff] flex items-center justify-center"
-        >
-          <span class="text-[#0d1117] text-3xl">▶</span>
+          {% endif %}
         </div>
-        {% endif %}
-        <div class="p-3 border-t border-[#30363d]">
-          <p class="text-xs text-[#8b949e] truncate">{{ item.title }}</p>
+
+        <!-- Code preview -->
+        <div class="mx-4 sm:mx-6 mb-5 rounded-lg overflow-hidden border border-[#30363d] bg-[#0a0e14] relative">
+          <pre class="p-4 sm:p-5 text-xs sm:text-sm leading-relaxed overflow-hidden" style="max-height: 320px; margin: 0;"><code class="language-{{ featured.language }}">{{ featured.code }}</code></pre>
+          <!-- Fade at bottom -->
+          <div class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0a0e14] to-transparent pointer-events-none"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="flex items-center justify-between px-4 sm:px-6 pb-5 pt-3 border-t border-[#30363d] flex-wrap gap-2">
+          <div class="flex flex-wrap gap-1.5">
+            {% for tag in featured.tags|slice:":5" %}
+            <span class="text-[10px] font-mono text-[#bc8cff] bg-[#161b22] border border-[#30363d] px-2 py-0.5 rounded">
+              #{{ tag }}
+            </span>
+            {% endfor %}
+          </div>
+          <span class="text-[#8b949e] group-hover:text-[#3fb950] text-xs font-mono transition-colors flex items-center gap-1 flex-shrink-0">
+            <span>cat</span>
+            <span>→</span>
+          </span>
         </div>
       </a>
+    </article>
+    {% endwith %}
+
+    <!-- ═══ Other snippets (compact single-column list) ═══ -->
+    <div class="space-y-3" data-aos="fade-up" data-aos-delay="100">
+      {% for snippet in recent_snippets|slice:"1:6" %}
+      <a href="{{ snippet.get_absolute_url }}"
+         class="block terminal term-hover overflow-hidden">
+        <div class="terminal-header py-2">
+          <span class="terminal-dot bg-[#f85149]" style="width:8px;height:8px;"></span>
+          <span class="terminal-dot bg-[#d29922]" style="width:8px;height:8px;"></span>
+          <span class="terminal-dot bg-[#3fb950]" style="width:8px;height:8px;"></span>
+          <span class="text-[#8b949e] text-[11px] ml-2 sm:ml-3 truncate font-mono flex-1">
+            {{ snippet.slug }}.{{ snippet.language }}
+          </span>
+          <span class="ml-auto text-[#bc8cff] text-[10px] font-mono px-2 py-0.5 bg-[#161b22] border border-[#30363d] rounded flex-shrink-0">
+            {{ snippet.language }}
+          </span>
+        </div>
+        <div class="px-4 py-3">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0 flex-1">
+              <h4 class="text-sm sm:text-base font-bold text-[#c9d1d9] truncate">
+                {{ snippet.title }}
+              </h4>
+              {% if snippet.description %}
+              <p class="text-xs text-[#8b949e] mt-1 line-clamp-1">
+                {{ snippet.description }}
+              </p>
+              {% endif %}
+              {% if snippet.tags %}
+              <div class="flex flex-wrap gap-1.5 mt-2">
+                {% for tag in snippet.tags|slice:":3" %}
+                <span class="text-[10px] font-mono text-[#bc8cff] bg-[#161b22] border border-[#30363d] px-1.5 py-0.5 rounded">
+                  #{{ tag }}
+                </span>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <span class="text-[#8b949e] hover:text-[#3fb950] text-base font-mono flex-shrink-0 mt-0.5 transition-colors">→</span>
+          </div>
+        </div>
+      </a>
+      {% endfor %}
+
+      <!-- View all snippets link -->
+      <a href="{% url 'snippet_list' %}"
+         class="block text-center py-3.5 text-xs sm:text-sm font-mono text-[#8b949e] hover:text-[#58a6ff] border border-dashed border-[#30363d] hover:border-[#58a6ff] rounded-lg transition-all">
+        <span class="text-[#3fb950]">$</span> ls -la snippets/ →
+      </a>
     </div>
-    {% endfor %}
   </div>
   {% else %}
   <div class="terminal">
-    <div class="terminal-body">
-      <p>
-        <span class="text-[#3fb950]">$</span>
-        <span class="text-[#58a6ff]">ls</span> gallery/
-      </p>
+    <div class="terminal-body font-mono text-sm">
+      <p><span class="text-[#3fb950]">$</span> <span class="text-[#58a6ff]">ls</span> snippets/</p>
       <p class="text-[#8b949e] mt-2">directory is empty</p>
     </div>
   </div>
   {% endif %}
-</div>
+</section>
 
-<!-- Contact as SSH Command -->
-<div class="max-w-4xl mx-auto px-4 py-20">
+<!-- ═══ Load Highlight.js for the featured snippet preview ═══ -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".language-\\{\\{").forEach(() => {});
+    document.querySelectorAll("pre code[class*='language-']").forEach((el) => {
+      if (window.hljs && !el.dataset.highlighted) {
+        hljs.highlightElement(el);
+      }
+    });
+  });
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════
+     GALLERY — responsive grid (2 cols mobile, 4 desktop)
+════════════════════════════════════════════════════════════════ -->
+<section class="max-w-6xl mx-auto px-4 py-12 md:py-16">
+  <div class="flex items-end justify-between mb-8 flex-wrap gap-3" data-aos="fade-up">
+    <h2 class="text-xl md:text-2xl font-bold">
+      <span class="text-[#3fb950]">➜</span>
+      <span class="text-[#58a6ff]">open</span>
+      <span class="text-[#d29922]">gallery/</span>
+    </h2>
+    <a href="{% url 'gallery_list' %}"
+       class="text-xs font-mono text-[#8b949e] hover:text-[#58a6ff] transition-colors">
+      view_all →
+    </a>
+  </div>
+
+  {% if gallery_preview %}
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+    {% for item in gallery_preview %}
+    <a href="{{ item.get_absolute_url }}"
+       class="block terminal term-hover overflow-hidden group relative"
+       data-aos="zoom-in" data-aos-delay="{{ forloop.counter|add:50 }}">
+      {% if item.type == 'image' and item.image %}
+      <img src="{{ item.image.url }}" alt="{{ item.title }}"
+           class="w-full h-32 sm:h-40 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+      {% elif item.type == 'image' and item.url %}
+      <img src="{{ item.url }}" alt="{{ item.title }}"
+           class="w-full h-32 sm:h-40 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500" />
+      {% else %}
+      <div class="w-full h-32 sm:h-40 md:h-48 bg-gradient-to-br from-[#bc8cff] to-[#58a6ff] flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+        <i class="fas fa-play text-white text-2xl md:text-3xl"></i>
+      </div>
+      {% endif %}
+      <div class="p-2 md:p-3 border-t border-[#30363d]">
+        <p class="text-xs font-mono text-[#8b949e] truncate">{{ item.title }}</p>
+      </div>
+      <!-- Overlay for image hover -->
+      <div class="absolute inset-0 bg-[#0d1117]/0 group-hover:bg-[#0d1117]/20 transition-colors pointer-events-none"></div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="terminal">
+    <div class="terminal-body font-mono text-sm">
+      <p><span class="text-[#3fb950]">$</span> <span class="text-[#58a6ff]">ls</span> gallery/</p>
+      <p class="text-[#8b949e] mt-2">directory is empty</p>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════
+     CONTACT CTA
+════════════════════════════════════════════════════════════════ -->
+<section class="max-w-4xl mx-auto px-4 py-16 md:py-24">
   <div class="terminal text-center" data-aos="fade-up">
-    <div class="terminal-header">
+    <div class="terminal-header justify-center">
       <span class="terminal-dot bg-[#f85149]"></span>
       <span class="terminal-dot bg-[#d29922]"></span>
       <span class="terminal-dot bg-[#3fb950]"></span>
-      <span class="text-[#8b949e] text-sm ml-4">ssh contact@portfolio</span>
+      <span class="text-[#8b949e] text-xs sm:text-sm ml-3 truncate font-mono">ssh contact@portfolio</span>
     </div>
-    <div class="terminal-body">
-      <p class="text-lg mb-4">
+    <div class="terminal-body py-8 md:py-12">
+      <p class="text-base md:text-lg mb-4">
         <span class="text-[#3fb950]">➜</span>
         <span class="text-[#58a6ff]">ssh</span> user@portfolio.com
       </p>
-      <p class="text-[#8b949e] mb-4">
+      <p class="text-sm md:text-base text-[#8b949e] mb-6">
         // Ready to collaborate on something amazing?
       </p>
-      <a
-        href="mailto:your.email@example.com"
-        class="inline-block text-[#58a6ff] hover:text-[#3fb950] transition-colors"
-      >
-        <span class="text-[#3fb950]">➜</span> ./send_message.sh
+      <a href="mailto:your.email@example.com"
+         class="inline-flex items-center gap-2 px-6 py-3 bg-[#161b22] border border-[#58a6ff] rounded-lg hover:bg-[#58a6ff] hover:text-[#0d1117] text-[#58a6ff] transition-all text-sm font-mono">
+        <i class="fas fa-paper-plane"></i>
+        <span>./send_message.sh</span>
       </a>
     </div>
   </div>
-</div>
+</section>
 
+<!-- ══════════════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════════════ -->
 <script>
-  // Counter animation
+  // Counter animation on scroll
   function animateCounter(element) {
-    const target = parseInt(element.dataset.counter);
+    const target = parseInt(element.dataset.counter) || 0;
+    if (target === 0) {
+      element.textContent = "0";
+      return;
+    }
     let current = 0;
-    const increment = target / 50;
+    const increment = target / 40;
     const timer = setInterval(() => {
       current += increment;
       if (current >= target) {
@@ -421,22 +539,41 @@
       } else {
         element.textContent = Math.floor(current);
       }
-    }, 30);
+    }, 25);
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
 
     document.querySelectorAll("[data-counter]").forEach((counter) => {
       observer.observe(counter);
     });
   });
 </script>
+
+<!-- Line-clamp utility (Tailwind CDN doesn't ship it by default) -->
+<style>
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
 {% endblock %}
