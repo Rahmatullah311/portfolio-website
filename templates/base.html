@@ -1,9 +1,170 @@
+{% load static %}
 <!doctype html>
 <html lang="en" class="scroll-smooth">
   <head>
+    <!-- ══════════════════════════════════════════════════════════════
+         BASIC META
+    ══════════════════════════════════════════════════════════════ -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}~/portfolio{% endblock %}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#0a0e14" />
+    <meta name="color-scheme" content="dark light" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SEO — PRIMARY
+    ══════════════════════════════════════════════════════════════ -->
+    <title>
+      {% block title %}Rahmat — Full Stack Developer | Projects, Articles & Code
+      Snippets{% endblock %}
+    </title>
+    <meta
+      name="description"
+      content="{% block meta_description %}Full Stack Developer building web applications with Python, Django, React, and PostgreSQL. Explore my projects, technical articles, and code snippets.{% endblock %}"
+    />
+    <meta
+      name="keywords"
+      content="{% block meta_keywords %}Rahmat, full stack developer, Python developer, Django developer, React developer, web developer, software engineer, portfolio{% endblock %}"
+    />
+    <meta name="author" content="Rahmat" />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="rating" content="general" />
+    <link
+      rel="canonical"
+      href="{% block canonical_url %}https://profile.rahmatservices.com{{ request.path }}{% endblock %}"
+    />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         OPEN GRAPH — Facebook, LinkedIn, WhatsApp, Telegram
+    ══════════════════════════════════════════════════════════════ -->
+    <meta
+      property="og:type"
+      content="{% block og_type %}website{% endblock %}"
+    />
+    <meta property="og:site_name" content="Rahmat — Portfolio" />
+    <meta
+      property="og:title"
+      content="{% block og_title %}Rahmat — Full Stack Developer{% endblock %}"
+    />
+    <meta
+      property="og:description"
+      content="{% block og_description %}Full Stack Developer building web applications with Python, Django, React, and PostgreSQL.{% endblock %}"
+    />
+    <meta
+      property="og:url"
+      content="https://profile.rahmatservices.com{{ request.path }}"
+    />
+    <meta
+      property="og:image"
+      content="{% block og_image %}https://profile.rahmatservices.com{% static 'images/rahmat-website-logo.png' %}{% endblock %}"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Rahmat — Full Stack Developer" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         TWITTER / X CARD
+    ══════════════════════════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@yourusername" />
+    <meta name="twitter:creator" content="@yourusername" />
+    <meta
+      name="twitter:title"
+      content="{% block twitter_title %}Rahmat — Full Stack Developer{% endblock %}"
+    />
+    <meta
+      name="twitter:description"
+      content="{% block twitter_description %}Full Stack Developer building web applications with Python, Django, React, and PostgreSQL.{% endblock %}"
+    />
+    <meta
+      name="twitter:image"
+      content="{% block twitter_image %}https://profile.rahmatservices.com{% static 'images/rahmat-website-logo.png' %}{% endblock %}"
+    />
+    <meta name="twitter:image:alt" content="Rahmat — Full Stack Developer" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         FAVICON & APP ICONS
+    ══════════════════════════════════════════════════════════════ -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'images/rahmat-website-logo.png' %}"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="{% static 'images/rahmat-website-logo.png' %}"
+    />
+    <link
+      rel="mask-icon"
+      href="{% static 'images/rahmat-website-logo.png' %}"
+      color="#58a6ff"
+    />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         PERFORMANCE — Preconnect & DNS Prefetch
+    ══════════════════════════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com" />
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+    <!-- ══════════════════════════════════════════════════════════════
+         STRUCTURED DATA — Person
+    ══════════════════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rahmat",
+        "url": "https://profile.rahmatservices.com",
+        "image": "https://profile.rahmatservices.com{% static 'images/rahmat-website-logo.png' %}",
+        "jobTitle": "Full Stack Developer",
+        "description": "Full Stack Developer building web applications with Python, Django, React, and PostgreSQL.",
+        "knowsAbout": [
+          "Python",
+          "Django",
+          "JavaScript",
+          "TypeScript",
+          "React",
+          "Node.js",
+          "PostgreSQL",
+          "Redis",
+          "Docker",
+          "Linux"
+        ],
+        "sameAs": [
+          "https://github.com/yourusername",
+          "https://www.linkedin.com/in/yourusername",
+          "https://twitter.com/yourusername"
+        ]
+      }
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         STRUCTURED DATA — WebSite
+    ══════════════════════════════════════════════════════════════ -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Rahmat — Portfolio",
+        "url": "https://profile.rahmatservices.com",
+        "inLanguage": "en"
+      }
+    </script>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         STYLES & SCRIPTS
+    ══════════════════════════════════════════════════════════════ -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
     <link
@@ -58,9 +219,15 @@
         scrollbar-color: #30363d #0d1117;
       }
 
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
       body {
         background: #0a0e14;
         color: #c9d1d9;
+        padding-bottom: 40px;
       }
 
       /* Custom Scrollbar */
@@ -83,51 +250,42 @@
       .terminal {
         background: #0d1117;
         border: 1px solid #30363d;
-        border-radius: 6px;
-        box-shadow: 0 0 20px rgba(88, 166, 255, 0.1);
-        position: relative;
-      }
-
-      .terminal::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 35px;
-        background: #161b22;
-        border-bottom: 1px solid #30363d;
-        border-radius: 6px 6px 0 0;
+        border-radius: 8px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
       }
 
       .terminal-header {
-        padding: 8px 12px;
+        padding: 10px 14px;
         display: flex;
         align-items: center;
         background: #161b22;
         border-bottom: 1px solid #30363d;
-        border-radius: 6px 6px 0 0;
       }
 
       .terminal-dot {
-        width: 12px;
-        height: 12px;
+        width: 11px;
+        height: 11px;
         border-radius: 50%;
-        margin-right: 8px;
-        transition: all 0.3s;
+        margin-right: 7px;
+        transition: transform 0.2s;
       }
 
       .terminal-dot:hover {
-        transform: scale(1.2);
+        transform: scale(1.25);
       }
 
       .terminal-body {
         padding: 20px;
-        font-family: "JetBrains Mono", monospace;
-        position: relative;
       }
 
-      /* Scanline effect */
+      @media (max-width: 640px) {
+        .terminal-body {
+          padding: 16px;
+        }
+      }
+
+      /* Scanlines overlay */
       .scanlines {
         position: fixed;
         top: 0;
@@ -135,41 +293,20 @@
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 9999;
+        z-index: 40;
         background: repeating-linear-gradient(
           0deg,
           transparent,
           transparent 2px,
-          rgba(0, 0, 0, 0.03) 2px,
-          rgba(0, 0, 0, 0.03) 4px
+          rgba(0, 0, 0, 0.04) 2px,
+          rgba(0, 0, 0, 0.04) 4px
         );
+        opacity: 0.6;
       }
 
-      /* Glitch effect */
-      .glitch {
-        position: relative;
-        animation: glitch 2s infinite;
-      }
-
-      @keyframes glitch {
-        0%,
-        90% {
-          transform: translate(0);
-        }
-        92% {
-          transform: translate(-2px, 2px);
-        }
-        94% {
-          transform: translate(2px, -2px);
-        }
-        96% {
-          transform: translate(-1px, -1px);
-        }
-        98% {
-          transform: translate(1px, 1px);
-        }
-        100% {
-          transform: translate(0);
+      @media (max-width: 768px) {
+        .scanlines {
+          display: none;
         }
       }
 
@@ -177,10 +314,11 @@
       .cursor {
         display: inline-block;
         width: 10px;
-        height: 20px;
+        height: 1.1em;
         background: #58a6ff;
-        animation: blink 1s infinite;
-        vertical-align: middle;
+        animation: blink 1s steps(2) infinite;
+        vertical-align: text-bottom;
+        margin-left: 2px;
       }
 
       @keyframes blink {
@@ -194,69 +332,12 @@
         }
       }
 
-      /* Typing animation */
-      .typing {
-        overflow: hidden;
-        white-space: nowrap;
-        animation: typing 2s steps(40);
-      }
-
-      @keyframes typing {
-        from {
-          width: 0;
-        }
-        to {
-          width: 100%;
-        }
-      }
-
-      /* Command prompt */
-      .prompt::before {
-        content: "➜ ";
-        color: #3fb950;
-        font-weight: bold;
-      }
-
-      /* Syntax colors */
-      .cmd {
-        color: #58a6ff;
-      }
-      .arg {
-        color: #d29922;
-      }
-      .str {
-        color: #a5d6ff;
-      }
-      .num {
-        color: #79c0ff;
-      }
-      .comment {
-        color: #8b949e;
-        font-style: italic;
-      }
-      .keyword {
-        color: #ff7b72;
-      }
-      .func {
-        color: #d2a8ff;
-      }
-
       /* Grid background */
       .grid-bg {
         background-image:
-          linear-gradient(rgba(88, 166, 255, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(88, 166, 255, 0.05) 1px, transparent 1px);
+          linear-gradient(rgba(88, 166, 255, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(88, 166, 255, 0.06) 1px, transparent 1px);
         background-size: 30px 30px;
-      }
-
-      /* Terminal input */
-      .term-input {
-        background: transparent;
-        border: none;
-        color: #c9d1d9;
-        font-family: "JetBrains Mono", monospace;
-        outline: none;
-        caret-color: #58a6ff;
       }
 
       /* Glow effects */
@@ -270,7 +351,7 @@
         box-shadow: 0 0 30px rgba(188, 140, 255, 0.3);
       }
 
-      /* Matrix rain effect */
+      /* Matrix rain background */
       .matrix-rain {
         position: fixed;
         top: 0;
@@ -279,19 +360,28 @@
         height: 100%;
         pointer-events: none;
         z-index: 0;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 14px;
-        color: rgba(88, 166, 255, 0.3);
+        opacity: 0.35;
       }
 
-      /* Hover effects */
+      @media (max-width: 768px) {
+        .matrix-rain {
+          opacity: 0.15;
+        }
+      }
+
+      /* Hover effect for cards */
       .term-hover {
-        transition: all 0.3s;
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
       }
       .term-hover:hover {
         border-color: #58a6ff;
-        box-shadow: 0 0 20px rgba(88, 166, 255, 0.2);
-        transform: translateY(-2px);
+        box-shadow:
+          0 0 24px rgba(88, 166, 255, 0.18),
+          0 8px 32px rgba(0, 0, 0, 0.4);
+        transform: translateY(-3px);
       }
 
       /* Status bar */
@@ -304,25 +394,95 @@
 
       /* ASCII art */
       .ascii-art {
-        font-family: "JetBrains Mono", monospace;
-        line-height: 1.2;
+        line-height: 1.15;
         color: #58a6ff;
+        text-shadow: 0 0 20px rgba(88, 166, 255, 0.4);
+        font-size: 0.65rem;
+        overflow-x: auto;
       }
 
-      /* Terminal tabs */
-      .term-tab {
-        padding: 8px 16px;
-        background: #0d1117;
-        border: 1px solid #30363d;
-        border-bottom: none;
-        border-radius: 6px 6px 0 0;
-        cursor: pointer;
-        transition: all 0.3s;
+      @media (min-width: 640px) {
+        .ascii-art {
+          font-size: 0.85rem;
+        }
       }
-      .term-tab.active {
-        background: #161b22;
-        color: #58a6ff;
-        border-color: #58a6ff;
+      @media (min-width: 1024px) {
+        .ascii-art {
+          font-size: 1rem;
+        }
+      }
+
+      /* Nav link underline */
+      .nav-link {
+        position: relative;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 0;
+        height: 1px;
+        background: #3fb950;
+        transition: width 0.25s ease;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* Mobile menu */
+      .mobile-menu {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.4s ease,
+          opacity 0.25s ease;
+        opacity: 0;
+      }
+      .mobile-menu.open {
+        max-height: 500px;
+        opacity: 1;
+      }
+
+      /* Blinking prompt in nav */
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+      .pulse-dot {
+        animation: pulse-dot 2s ease-in-out infinite;
+      }
+
+      /* Reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+
+      /* Code block scrolling */
+      pre,
+      code {
+        word-wrap: break-word;
+      }
+      pre {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Selection color */
+      ::selection {
+        background: rgba(88, 166, 255, 0.3);
+        color: #f0f6fc;
       }
     </style>
   </head>
@@ -335,110 +495,169 @@
 
     <!-- Terminal Navigation -->
     <nav
-      class="fixed top-0 w-full z-50 bg-[#0d1117]/95 backdrop-blur border-b border-[#30363d]"
+      class="fixed top-0 w-full z-50 bg-[#0d1117]/95 backdrop-blur-md border-b border-[#30363d]"
     >
       <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between items-center h-14">
-          <div class="flex items-center gap-3">
-            <span class="text-[#3fb950] font-bold">➜</span>
-            <span class="text-[#58a6ff] font-bold">~/portfolio</span>
-          </div>
+          <a
+            href="{% url 'home' %}"
+            class="flex items-center gap-2 group"
+            aria-label="Home"
+          >
+            <img
+              src="{% static 'images/rahmat-website-logo.png' %}"
+              alt="Rahmat — Full Stack Developer logo"
+              class="h-8 w-8 object-contain rounded transition-transform group-hover:scale-110"
+            />
+            <span
+              class="text-[#58a6ff] font-bold text-sm sm:text-base group-hover:text-[#3fb950] transition-colors"
+            >
+              ~/rahmat
+            </span>
+            <span
+              class="hidden sm:inline-block w-2 h-4 bg-[#58a6ff] pulse-dot align-middle"
+            ></span>
+          </a>
 
-          <div class="hidden md:flex items-center space-x-6">
+          <div class="hidden md:flex items-center space-x-5">
             <a
               href="{% url 'home' %}"
-              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+              class="nav-link text-[#8b949e] hover:text-[#58a6ff] transition-colors text-xs lg:text-sm"
             >
               <span class="text-[#3fb950]">$</span> cd ~
             </a>
             <a
               href="{% url 'project_list' %}"
-              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+              class="nav-link text-[#8b949e] hover:text-[#58a6ff] transition-colors text-xs lg:text-sm"
             >
               <span class="text-[#3fb950]">$</span> ls projects/
             </a>
             <a
               href="{% url 'article_list' %}"
-              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+              class="nav-link text-[#8b949e] hover:text-[#58a6ff] transition-colors text-xs lg:text-sm"
             >
               <span class="text-[#3fb950]">$</span> cat articles/
             </a>
             <a
               href="{% url 'snippet_list' %}"
-              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+              class="nav-link text-[#8b949e] hover:text-[#58a6ff] transition-colors text-xs lg:text-sm"
             >
               <span class="text-[#3fb950]">$</span> vim snippets/
             </a>
             <a
               href="{% url 'gallery_list' %}"
-              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors text-sm"
+              class="nav-link text-[#8b949e] hover:text-[#58a6ff] transition-colors text-xs lg:text-sm"
             >
               <span class="text-[#3fb950]">$</span> open gallery/
             </a>
           </div>
 
-          <div class="flex items-center gap-4">
-            <span class="text-[#8b949e] text-xs">v1.0.0</span>
+          <div class="flex items-center gap-3">
+            <span
+              class="hidden lg:inline text-[#8b949e] text-xs border border-[#30363d] px-2 py-0.5 rounded"
+            >
+              v1.0.0
+            </span>
             <button
               id="themeToggle"
-              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors"
+              class="text-[#8b949e] hover:text-[#58a6ff] transition-colors p-2"
+              aria-label="Toggle theme"
             >
               <i class="fas fa-terminal"></i>
             </button>
+            <button
+              id="mobileMenuBtn"
+              class="md:hidden text-[#8b949e] hover:text-[#58a6ff] transition-colors p-2"
+              aria-label="Toggle menu"
+              aria-expanded="false"
+            >
+              <i class="fas fa-bars text-lg" id="menuIcon"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="mobileMenu" class="mobile-menu md:hidden pb-4">
+          <div class="flex flex-col gap-1 pt-2 border-t border-[#30363d]">
+            <a
+              href="{% url 'home' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] hover:bg-[#161b22] transition-all text-sm px-3 py-2.5 rounded"
+            >
+              <span class="text-[#3fb950]">$</span> cd ~
+            </a>
+            <a
+              href="{% url 'project_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] hover:bg-[#161b22] transition-all text-sm px-3 py-2.5 rounded"
+            >
+              <span class="text-[#3fb950]">$</span> ls projects/
+            </a>
+            <a
+              href="{% url 'article_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] hover:bg-[#161b22] transition-all text-sm px-3 py-2.5 rounded"
+            >
+              <span class="text-[#3fb950]">$</span> cat articles/
+            </a>
+            <a
+              href="{% url 'snippet_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] hover:bg-[#161b22] transition-all text-sm px-3 py-2.5 rounded"
+            >
+              <span class="text-[#3fb950]">$</span> vim snippets/
+            </a>
+            <a
+              href="{% url 'gallery_list' %}"
+              class="text-[#8b949e] hover:text-[#58a6ff] hover:bg-[#161b22] transition-all text-sm px-3 py-2.5 rounded"
+            >
+              <span class="text-[#3fb950]">$</span> open gallery/
+            </a>
           </div>
         </div>
       </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="relative z-10">{% block content %} {% endblock %}</main>
+    <main class="relative z-10">{% block content %}{% endblock %}</main>
 
     <!-- Status Bar Footer -->
     <footer class="status-bar fixed bottom-0 w-full z-50">
       <div
-        class="max-w-7xl mx-auto px-4 py-2 flex justify-between items-center"
+        class="max-w-7xl mx-auto px-4 py-1.5 sm:py-2 flex justify-between items-center gap-2"
       >
-        <span>© 2024 ~/portfolio</span>
-        <span>UTF-8 | LF | TypeScript React</span>
-        <span>Ln 1, Col 1</span>
+        <span class="truncate">© 2026 ~/rahmat</span>
+        <span class="hidden sm:inline text-[#8b949e]"
+          >UTF-8 | LF | Monospace</span
+        >
+        <span class="truncate">Ln 1, Col 1</span>
       </div>
     </footer>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-      AOS.init({
-        duration: 600,
-        once: true,
-      });
+      AOS.init({ duration: 600, once: true });
 
-      // Matrix Rain Effect
+      /* ─── Matrix Rain Effect ─── */
       const canvas = document.getElementById("matrixCanvas");
       const ctx = canvas.getContext("2d");
 
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      function sizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      sizeCanvas();
 
       const matrix =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*()_+-=[]{}|;:,.<>?/";
       const fontSize = 14;
-      const columns = canvas.width / fontSize;
-      const drops = [];
-
-      for (let i = 0; i < columns; i++) {
-        drops[i] = Math.random() * -100;
-      }
+      let columns = Math.floor(canvas.width / fontSize);
+      let drops = new Array(columns).fill(0).map(() => Math.random() * -100);
 
       function drawMatrix() {
-        ctx.fillStyle = "rgba(10, 14, 20, 0.05)";
+        ctx.fillStyle = "rgba(10, 14, 20, 0.06)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "rgba(88, 166, 255, 0.3)";
-        ctx.font = fontSize + "px JetBrains Mono";
+        ctx.fillStyle = "rgba(88, 166, 255, 0.35)";
+        ctx.font = fontSize + "px 'JetBrains Mono', monospace";
 
         for (let i = 0; i < drops.length; i++) {
           const text = matrix[Math.floor(Math.random() * matrix.length)];
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
           if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
             drops[i] = 0;
           }
@@ -446,12 +665,61 @@
         }
       }
 
-      setInterval(drawMatrix, 50);
+      let matrixInterval = setInterval(drawMatrix, 60);
 
       window.addEventListener("resize", () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        sizeCanvas();
+        columns = Math.floor(canvas.width / fontSize);
+        drops = new Array(columns).fill(0).map(() => Math.random() * -100);
       });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          clearInterval(matrixInterval);
+        } else {
+          matrixInterval = setInterval(drawMatrix, 60);
+        }
+      });
+
+      /* ─── Mobile Menu ─── */
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      const menuIcon = document.getElementById("menuIcon");
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener("click", () => {
+          const isOpen = mobileMenu.classList.toggle("open");
+          mobileMenuBtn.setAttribute("aria-expanded", isOpen);
+          menuIcon.className = isOpen
+            ? "fas fa-times text-lg"
+            : "fas fa-bars text-lg";
+        });
+
+        mobileMenu.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => {
+            mobileMenu.classList.remove("open");
+            menuIcon.className = "fas fa-bars text-lg";
+            mobileMenuBtn.setAttribute("aria-expanded", "false");
+          });
+        });
+      }
+
+      /* ─── Theme Toggle ─── */
+      const themeToggle = document.getElementById("themeToggle");
+      if (themeToggle) {
+        themeToggle.addEventListener("click", () => {
+          document.documentElement.classList.toggle("dark");
+          const isDark = document.documentElement.classList.contains("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+          themeToggle.innerHTML = isDark
+            ? '<i class="fas fa-terminal"></i>'
+            : '<i class="fas fa-sun"></i>';
+        });
+
+        if (!document.documentElement.classList.contains("dark")) {
+          themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+      }
     </script>
   </body>
 </html>
